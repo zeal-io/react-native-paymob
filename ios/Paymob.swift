@@ -2,23 +2,13 @@ import Foundation
 import UIKit
 import AcceptSDK
 
-@objc public protocol RNWeAcceptModuleDelegate: class {
-
-    func rnPaymentAttemptFailed(_ error: Any, detailedDescription: String)
-    func rnTransactionRejected(_ payData: Any)
-    func rnTransactionAccepted(_ payData: Any)
-    func rnTransactionAccepted(_ payData: Any, savedCardData: Any)
-    func rnUserDidCancel3dSecurePayment(_ pendingPayData: Any)
-    func rnUserDidCancel()
-}
 
 @objc(Paymob)
 class Paymob: UIViewController, AcceptSDKDelegate {
 
-    let accept: AcceptSDK = AcceptSDK()
+    let accept = AcceptSDK()
     var successCallback: RCTPromiseResolveBlock!
     var errorCallback: RCTPromiseRejectBlock!
-    @objc public weak var delegate: RNWeAcceptModuleDelegate?
 
     @objc
     static func requiresMainQueueSetup() -> Bool {
