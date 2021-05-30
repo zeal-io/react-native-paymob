@@ -9,6 +9,8 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.module.annotations.ReactModule;
 import android.app.Activity;
+import java.util.HashMap;
+
 
  import com.paymob.acceptsdk.PayActivity;
  import com.paymob.acceptsdk.PayActivityIntentKeys;
