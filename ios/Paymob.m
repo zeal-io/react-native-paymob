@@ -3,7 +3,7 @@
 #import <React/RCTViewManager.h>
 
 
-@interface RCT_EXTERN_MODULE(RNPaymobAccept, RCTViewManager)
+@interface RCT_EXTERN_MODULE(Paymob, RCTViewManager)
 RCT_EXTERN_METHOD(playSound:(NSString *)url)
 
 RCT_EXTERN_METHOD(payWithNoToken:(NSDictionary *)data successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseErrorBlock)errorCallback)

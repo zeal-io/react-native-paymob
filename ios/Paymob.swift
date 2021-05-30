@@ -12,8 +12,8 @@ import AcceptSDK
     func rnUserDidCancel()
 }
 
-@objc(RNPaymobAccept)
-class RNPaymobAccept: UIViewController, AcceptSDKDelegate {
+@objc(Paymob)
+class Paymob: UIViewController, AcceptSDKDelegate {
 
     let accept: AcceptSDK = AcceptSDK()
     var successCallback: RCTPromiseResolveBlock!
