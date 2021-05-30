@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 import AcceptSDK
 
@@ -77,9 +76,10 @@ class Paymob:NSObject {
                                     isEnglish: mappedData["isEnglish"] as! Bool
             )
             
-            successCallback("")
+            // successCallback("")
        }catch let error {
-            errorCallback("error", "error", error)
+            // TODO: proper error handling.
+            // errorCallback("error", "error", error)
        }
     }
 
