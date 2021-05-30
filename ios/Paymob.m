@@ -5,7 +5,9 @@
 
 @interface RCT_EXTERN_MODULE(RNPaymobAccept, RCTViewManager)
 RCT_EXTERN_METHOD(playSound:(NSString *)url)
+
 RCT_EXTERN_METHOD(payWithNoToken:(NSDictionary *)data successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseErrorBlock)errorCallback)
+
 RCT_EXTERN_METHOD(presentPayVC:(UIViewController)vc
                  billingData:(NSDictionary<NSString,NSString>)billingData
                  paymentKey:(NSString) paymentKey
