@@ -9,6 +9,7 @@ class Paymob:NSObject, AcceptSDKDelegate {
     let accept = AcceptSDK()
     var successCallback: RCTPromiseResolveBlock!
     var errorCallback: RCTPromiseRejectBlock!
+    lazy let topVC = topMostController();
 
     @objc
     static func requiresMainQueueSetup() -> Bool {
@@ -34,8 +35,7 @@ class Paymob:NSObject, AcceptSDKDelegate {
         accept.delegate = self
         self.successCallback = successCallback
         self.errorCallback = errorCallback
-        let topVC = topMostController()
-
+        
         do {
             let mappedData:NSMutableDictionary = NSMutableDictionary()
             mappedData["paymentKey"] = data["paymentKey"] ?? ""
