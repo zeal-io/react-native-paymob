@@ -6,8 +6,4 @@
 
 RCT_EXTERN_METHOD(payWithNoToken:(NSDictionary *)data successCallback:(RCTResponseSenderBlock)successCallback errorCallback:(RCTResponseErrorBlock)errorCallback)
 
-+ (BOOL)requiresMainQueueSetup
-{
-    return YES;
-}
 @end

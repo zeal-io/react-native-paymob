@@ -4,17 +4,11 @@ import AcceptSDK
 
 
 @objc(Paymob)
-class Paymob:NSObject, AcceptSDKDelegate {
+class Paymob:NSObject {
 
     let accept = AcceptSDK()
-    var successCallback: RCTPromiseResolveBlock!
-    var errorCallback: RCTPromiseRejectBlock!
     var topVC: UIViewController!
 
-    @objc
-    static func requiresMainQueueSetup() -> Bool {
-      return true
-    }
 
     func topMostController() -> UIViewController {
         var topController: UIViewController = UIApplication.shared.keyWindow!.rootViewController!
@@ -32,16 +26,13 @@ class Paymob:NSObject, AcceptSDKDelegate {
     }
 
     public func _payWithNoToken(_ data:NSDictionary, successCallback: @escaping RCTPromiseResolveBlock, errorCallback: @escaping RCTPromiseRejectBlock) {
-        accept.delegate = self
-        self.successCallback = successCallback
-        self.errorCallback = errorCallback
-        
         if topVC == nil {
             topVC = topMostController()
         }
         
         do {
-            let mappedData:NSMutableDictionary = NSMutableDictionary()
+            
+            let mappedData = NSMutableDictionary()
             mappedData["paymentKey"] = data["paymentKey"] ?? ""
             mappedData["saveCardDefault"] = data["saveCardDefault"] ?? false
             mappedData["showSaveCard"] = data["showSaveCard"] ?? true
@@ -76,6 +67,7 @@ class Paymob:NSObject, AcceptSDKDelegate {
                            "last_name": mappedData["lastName"],
                            "state": mappedData["state"]
             ]
+            
             try accept.presentPayVC(vC: topVC,
                                     billingData: bData as! [String : String],
                                     paymentKey:mappedData["paymentKey"] as! String,
@@ -86,41 +78,9 @@ class Paymob:NSObject, AcceptSDKDelegate {
             )
             
             successCallback("")
-
-        } catch AcceptSDKError.MissingArgumentError(let errorMessage) {
-            self.errorCallback("-1",errorMessage, nil)
-            errorCallback("sdk error")
-       }  catch let error {
-            self.errorCallback("-1", error.localizedDescription, error)
-            errorCallback("error")
+       }catch let error {
+            errorCallback("error", "error", error)
        }
-
-
-    }
-    
-
-    public func paymentAttemptFailed(_ error: AcceptSDKError, detailedDescription: String) {
-        self.successCallback([false, detailedDescription, error.localizedDescription])
-    }
-
-    public func transactionRejected(_ payData: PayResponse) {
-        self.successCallback([false, 400, "Transaction Rejected!!"])
-    }
-
-    public func transactionAccepted(_ payData: PayResponse) {
-        self.successCallback([true, 0, "", ""])
-    }
-
-    public func transactionAccepted(_ payData: PayResponse, savedCardData: SaveCardResponse) {
-        self.successCallback([true, 0, "", savedCardData.token])
-    }
-
-    public func userDidCancel3dSecurePayment(_ pendingPayData: PayResponse) {
-        self.successCallback([false, 0, "User canceled 3-d secure verification!!"])
-    }
-
-    public func userDidCancel() {
-        self.successCallback([false, 0, "User canceled!!"])
     }
 
 }
