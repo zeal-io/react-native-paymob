@@ -1,6 +1,6 @@
 import { NativeModules } from 'react-native';
 
-interface Paymob {
+interface PaymobT {
   payWithNoToken: (
     data: any,
     successCallback: (data: any) => void,
@@ -10,4 +10,4 @@ interface Paymob {
 }
 
 const { Paymob } = NativeModules;
-export default Paymob as Paymob;
+export default Paymob as PaymobT;
