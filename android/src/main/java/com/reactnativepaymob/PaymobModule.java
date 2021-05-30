@@ -52,8 +52,6 @@ public class PaymobModule extends ReactContextBaseJavaModule {
       pay_intent.putExtra(PayActivityIntentKeys.SAVE_CARD_DEFAULT, saveCardDefault);
       pay_intent.putExtra(PayActivityIntentKeys.SHOW_SAVE_CARD, showSaveCard);
       pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR,0x80970073);
-      Intent secure_intent = new Intent(currentActivity, ThreeDSecureWebViewActivty.class);
-      secure_intent.putExtra("ActionBar",hideActionBar);
       pay_intent.putExtra("language",language);
       currentActivity.startActivityForResult(pay_intent, ACCEPT_PAYMENT_REQUEST);
     }
