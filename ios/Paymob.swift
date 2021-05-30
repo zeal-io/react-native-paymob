@@ -92,7 +92,7 @@ class Paymob:NSObject, AcceptSDKDelegate {
             errorCallback(errorMessage)
        }  catch let error {
         self.errorCallback("-1", error.localizedDescription, error)
-            errorCallback(error)
+            errorCallback(error.localizedDescription)
        }
 
 
