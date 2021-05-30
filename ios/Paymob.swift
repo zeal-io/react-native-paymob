@@ -85,7 +85,7 @@ class Paymob:NSObject, AcceptSDKDelegate {
                                     isEnglish: mappedData["isEnglish"] as! Bool
             )
             
-            successCallback()
+            successCallback("")
 
         } catch AcceptSDKError.MissingArgumentError(let errorMessage) {
             self.errorCallback("-1",errorMessage, nil)
