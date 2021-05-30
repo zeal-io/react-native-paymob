@@ -39,9 +39,9 @@ public class PaymobModule extends ReactContextBaseJavaModule {
 
       Intent pay_intent = new Intent(currentActivity, PayActivity.class);
       Boolean showSaveCard = (Boolean) paramsMap.get("showSaveCard");
-      Boolean saveCardDefault = (Boolean) datadata.get("saveCardDefault");
-      Boolean isEnglish = (Boolean) datadata.get("isEnglish");
-      Boolean hideActionBar = (Boolean) datadata.get("hideActionBar");
+      Boolean saveCardDefault = (Boolean) paramsMap.get("saveCardDefault");
+      Boolean isEnglish = (Boolean) paramsMap.get("isEnglish");
+      Boolean hideActionBar = (Boolean) paramsMap.get("hideActionBar");
       String language = "en";
 
       if(isEnglish == false){
