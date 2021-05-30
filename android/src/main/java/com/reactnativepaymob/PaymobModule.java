@@ -7,9 +7,11 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.module.annotations.ReactModule;
 import android.app.Activity;
 import java.util.HashMap;
+import com.facebook.react.bridge.ReadableMap;
 
 
  import com.paymob.acceptsdk.PayActivity;
@@ -31,10 +33,9 @@ public class PaymobModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void payWithNoToken(ReadableMap params, Callback successCallback, Callback errorCallback) {
       Activity currentActivity = getCurrentActivity();
-      mParams = params;
 
       if (currentActivity == null) {
-        mErrorCallback.invoke(E_ACTIVITY_DOES_NOT_EXIST);
+        // mErrorCallback.invoke(E_ACTIVITY_DOES_NOT_EXIST);
         return;
       }
       HashMap paramsMap = params.toHashMap();
