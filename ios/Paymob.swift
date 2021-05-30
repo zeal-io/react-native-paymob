@@ -89,10 +89,10 @@ class Paymob:NSObject, AcceptSDKDelegate {
 
         } catch AcceptSDKError.MissingArgumentError(let errorMessage) {
             self.errorCallback("-1",errorMessage, nil)
-            errorCallback(errorMessage)
+            errorCallback("sdk error")
        }  catch let error {
-        self.errorCallback("-1", error.localizedDescription, error)
-            errorCallback(error.localizedDescription)
+            self.errorCallback("-1", error.localizedDescription, error)
+            errorCallback("error")
        }
 
 
