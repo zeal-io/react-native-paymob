@@ -17,14 +17,14 @@ class Paymob:NSObject {
         return topController
     }
 
-    @objc public func payWithNoToken(_ data:NSDictionary, successCallback:  @escaping RCTPromiseResolveBlock, errorCallback:  @escaping RCTPromiseRejectBlock) {
+    @objc public func payWithNoToken(_ data:NSDictionary, successCallback: RCTResponderSenderBlock, errorCallback:  RCTResponderSenderBlock ) -> Void {
         DispatchQueue.main.async { [weak self] in
             self?._payWithNoToken(data, successCallback:successCallback , errorCallback:errorCallback)
         }
 
     }
 
-    public func _payWithNoToken(_ data:NSDictionary, successCallback: @escaping RCTPromiseResolveBlock, errorCallback: @escaping RCTPromiseRejectBlock) {
+    public func _payWithNoToken(_ data:NSDictionary, successCallback: RCTResponderSenderBlock, errorCallback: RCTResponderSenderBlock) {
         if topVC == nil {
             topVC = topMostController()
         }
@@ -79,7 +79,7 @@ class Paymob:NSObject {
              successCallback([])
        }catch let error {
             // TODO: proper error handling.
-             errorCallback(["error", "error", error])
+             errorCallback("")
        }
     }
 
