@@ -5185,8 +5185,8 @@ react-native-codegen@^0.0.6:
     nullthrows "^1.1.1"
 
 "react-native-paymob@https://github.com/a-eid/react-native-paymob":
-  version "0.1.25"
-  resolved "https://github.com/a-eid/react-native-paymob#adc0386c8387b2f3f2dc2362187c8a873eb3d5da"
+  version "0.1.26"
+  resolved "https://github.com/a-eid/react-native-paymob#aae6da7686afe9dad06bc130276e38ebe13ee096"
 
 react-native@0.64.1:
   version "0.64.1"
