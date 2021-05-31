@@ -38,18 +38,18 @@ public class PaymobModule extends ReactContextBaseJavaModule {
         // mErrorCallback.invoke(E_ACTIVITY_DOES_NOT_EXIST);
         return;
       }
-      HashMap paramsMap = params.toHashMap();
 
+      HashMap paramsMap = params.toHashMap();
       Intent pay_intent = new Intent(currentActivity, PayActivity.class);
       Boolean showSaveCard = (Boolean) paramsMap.get("showSaveCard");
       Boolean saveCardDefault = (Boolean) paramsMap.get("saveCardDefault");
-      Boolean isEnglish = (Boolean) paramsMap.get("isEnglish");
+      // Boolean isEnglish = (Boolean) paramsMap.get("isEnglish");
       Boolean hideActionBar = (Boolean) paramsMap.get("hideActionBar");
       String language = "en";
 
-      if(isEnglish == false){
-        language = "ar";
-      }
+      // if(isEnglish == false){
+      //   language = "ar";
+      // }
 
       putNormalExtras(pay_intent, paramsMap);
       pay_intent.putExtra(PayActivityIntentKeys.SAVE_CARD_DEFAULT, saveCardDefault);
