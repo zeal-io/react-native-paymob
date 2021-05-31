@@ -12,7 +12,6 @@ import AcceptSDK
     func rnUserDidCancel()
 }
 
-//var player: AVAudioPlayer?
 @objc(Paymob)
 class Paymob: NSObject, AcceptSDKDelegate {
 
