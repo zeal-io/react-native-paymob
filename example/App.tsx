@@ -23,11 +23,11 @@ export default () => {
             phoneNumber: 'phoneNumber',
             postalCode: 'postalCode',
           },
-          success => {
-            Alert.alert('success');
+          (...success) => {
+            Alert.alert(JSON.stringify(success));
           },
-          error => {
-            Alert.alert('error');
+          (...error) => {
+            Alert.alert(JSON.stringify(error));
           },
         );
       }}>
