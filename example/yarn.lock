@@ -5085,7 +5085,7 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@^2.0.2:
+prettier@^2.0.2, prettier@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.3.0.tgz#b6a5bf1284026ae640f17f7ff5658a7567fc0d18"
   integrity sha512-kXtO4s0Lz/DW/IJ9QdWhAf7/NmPWQXkFr/r/WkR3vyI+0v8amTDxiaQSLzs8NBlytfLWX/7uQUMIW677yLKl4w==
@@ -5185,8 +5185,8 @@ react-native-codegen@^0.0.6:
     nullthrows "^1.1.1"
 
 "react-native-paymob@https://github.com/a-eid/react-native-paymob":
-  version "0.1.23"
-  resolved "https://github.com/a-eid/react-native-paymob#6c68b81f49a9957b0d43f904defaaeea56a41d21"
+  version "0.1.24"
+  resolved "https://github.com/a-eid/react-native-paymob#cc0987285425402f91b25c5c6809f1938e672e5e"
 
 react-native@0.64.1:
   version "0.64.1"
