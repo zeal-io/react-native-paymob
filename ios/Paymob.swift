@@ -2,29 +2,106 @@ import Foundation
 import UIKit
 import AcceptSDK
 
-@objc public protocol RNWeAcceptModuleDelegate: class {
 
-    func rnPaymentAttemptFailed(_ error: Any, detailedDescription: String)
-    func rnTransactionRejected(_ payData: Any)
-    func rnTransactionAccepted(_ payData: Any)
-    func rnTransactionAccepted(_ payData: Any, savedCardData: Any)
-    func rnUserDidCancel3dSecurePayment(_ pendingPayData: Any)
-    func rnUserDidCancel()
-}
+
 
 @objc(Paymob)
-class Paymob: NSObject, AcceptSDKDelegate {
-
+class Paymob: NSObject, AcceptSDKDelegate{
+    
     let accept: AcceptSDK = AcceptSDK()
-    var successCallback: RCTPromiseResolveBlock!
-    var errorCallback: RCTPromiseRejectBlock!
-    @objc public weak var delegate: RNWeAcceptModuleDelegate?
-
-
-    @objc
-    static func requiresMainQueueSetup() -> Bool {
-      return true
+    
+    override init() {
+        super.init()
+        accept.delegate = self
     }
+
+    
+    func userDidCancel() {
+        print("userDidCancel")
+    }
+
+    func paymentAttemptFailed(_ error: AcceptSDKError, detailedDescription: String) {
+        print("paymentAttemptFailed")
+    }
+    
+    func transactionRejected(_ payData: PayResponse) {
+        print("transactionRejected")
+    }
+    
+    func transactionAccepted(_ payData: PayResponse) {
+        print("transactionAccepted")
+
+    }
+    
+    func transactionAccepted(_ payData: PayResponse, savedCardData: SaveCardResponse) {
+        print("transactionAccepted")
+    }
+    
+    func userDidCancel3dSecurePayment(_ pendingPayData: PayResponse) {
+        print("userDidCancel3dSecurePayment")
+    }
+    
+
+    
+    @objc func pay(_ options: [String: Int], Resolver resolve: @escaping RCTPromiseResolveBlock,  Rejector reject: @escaping RCTPromiseRejectBlock) -> Void {
+        DispatchQueue.main.async {
+
+            let bData = [
+                "apartment": "",
+                "email": "",
+                "floor": "",
+                "first_name": "",
+                "street": "",
+                "building": "",
+                "phone_number": "",
+                "shipping_method": "",
+                "postal_code": "",
+                "city": "",
+                "country": "",
+                "last_name": "",
+                "state": ""
+            ]
+
+            do {
+                try self.accept.presentPayVC(
+                        vC: UIApplication.shared.windows.first!.rootViewController!,
+                        billingData: bData,
+                        paymentKey: "",
+                        saveCardDefault: true,
+                        showSaveCard: false,
+                        showAlerts: true,
+                        token: nil,
+                        maskedPanNumber: nil,
+                        buttonsColor: nil,
+                        isEnglish: true,
+                        showScanCardButton: false,
+                        backgroundColor: nil,
+                        navBarColor: nil,
+                        navBarTextColor: nil,
+                        textFieldBackgroundColor: nil,
+                        textFieldTextColor: nil,
+                        titleLabelTextColor: nil,
+                        inputLabelTextColor: nil,
+                        buttonText: "buttonText",
+                        cardNameLabelText: "cardNameLabelText",
+                        cardNumberLabelText: "cardNumberLabelText",
+                        expirationLabelText: "expirationLabelText",
+                        cvvLabelText: "cvLabelText"
+                )
+                resolve("success")
+
+        } catch AcceptSDKError.MissingArgumentError(let errorMessage) {
+            print(errorMessage)
+            reject("", "", nil)
+        }  catch let error {
+            print(error.localizedDescription)
+            reject("", "", nil)
+        }
+
+        }
+    }
+    
+    
 
     func topMostController() -> UIViewController {
         var topController: UIViewController = UIApplication.shared.keyWindow!.rootViewController!
@@ -42,64 +119,6 @@ class Paymob: NSObject, AcceptSDKDelegate {
     }
 
     public func _payWithNoToken(_ data:NSDictionary, successCallback: @escaping RCTPromiseResolveBlock, errorCallback: @escaping RCTPromiseRejectBlock) {
-        accept.delegate = self
-        self.successCallback = successCallback
-        self.errorCallback = errorCallback
-        let topVC = topMostController()
-
-        do {
-            let mappedData:NSMutableDictionary = NSMutableDictionary()
-            mappedData["paymentKey"] = data["paymentKey"] ?? ""
-            mappedData["saveCardDefault"] = data["saveCardDefault"] ?? false
-            mappedData["showSaveCard"] = data["showSaveCard"] ?? true
-            mappedData["isEnglish"] = data["isEnglish"] ?? true
-            mappedData["showAlerts"] = data["showAlerts"] ?? true
-
-            // User data
-            mappedData["firstName"] = data["firstName"] ?? "NA"
-            mappedData["lastName"] = data["lastName"] ?? "NA"
-            mappedData["building"] = data["building"] ?? "NA"
-            mappedData["floor"] = data["floor"] ?? "NA"
-            mappedData["apartment"] = data["apartment"] ?? "NA"
-            mappedData["city"] = data["city"] ?? "NA"
-            mappedData["state"] = data["state"] ?? "NA"
-            mappedData["city"] = data["city"] ?? "NA"
-            mappedData["country"] = data["country"] ?? "NA"
-            mappedData["email"] = data["email"] ?? "NA"
-            mappedData["phoneNumber"] = data["phoneNumber"] ?? "NA"
-            mappedData["postalCode"] = data["postalCode"] ?? "NA"
-
-
-            let bData = [  "apartment": mappedData["apartment"],
-                           "email": mappedData["email"],
-                           "floor": mappedData["floor"],
-                           "first_name": mappedData["firstName"],
-                           "street": "NA",
-                           "building":  mappedData["building"],
-                           "phone_number": mappedData["phoneNumber"],
-                           "shipping_method": "NA",
-                           "postal_code": mappedData["postalCode"],
-                           "city": mappedData["city"],
-                           "country": mappedData["country"],
-                           "last_name": mappedData["lastName"],
-                           "state": mappedData["state"]
-            ]
-            try accept.presentPayVC(vC: topVC,
-                                    billingData: bData as! [String : String],
-                                    paymentKey:mappedData["paymentKey"] as! String,
-                                    saveCardDefault: mappedData["saveCardDefault"] as! Bool,
-                                    showSaveCard: mappedData["showSaveCard"] as! Bool,
-                                    showAlerts: mappedData["showAlerts"] as! Bool,
-                                    isEnglish: mappedData["isEnglish"] as! Bool
-            )
-
-        } catch AcceptSDKError.MissingArgumentError(let errorMessage) {
-            self.errorCallback("-1",errorMessage, nil)
-       }  catch let error {
-        self.errorCallback("-1", error.localizedDescription, error)
-       }
-
-
     }
     @objc func presentPayVC(vC: UIViewController, billingData: [String : String], paymentKey: String, saveCardDefault: Bool, showSaveCard: Bool, showAlerts: Bool, token: String? = nil, maskedPanNumber: String? = nil, buttonsColor: UIColor? = nil, isEnglish: Bool = true, backgroundColor: UIColor? = nil, navBarColor: UIColor? = nil, navBarTextColor: UIColor? = nil, textFieldBackgroundColor: UIColor? = nil, textFieldTextColor: UIColor? = nil, titleLabelTextColor: UIColor? = nil, inputLabelTextColor: UIColor? = nil, buttonText: String = "", cardNameLabelText: String = "", cardNumberLabelText: String = "", expirationLabelText: String = "", cvvLabelText: String = "") {
 
@@ -127,35 +146,6 @@ class Paymob: NSObject, AcceptSDKDelegate {
 
     }
 
-    public func paymentAttemptFailed(_ error: AcceptSDKError, detailedDescription: String) {
-        self.successCallback([false, detailedDescription, error.localizedDescription])
-        self.delegate?.rnPaymentAttemptFailed(error.localizedDescription, detailedDescription: detailedDescription)
-    }
-
-    public func transactionRejected(_ payData: PayResponse) {
-        self.delegate?.rnTransactionRejected(payResponseToDictionary(payData: payData))
-        self.successCallback([false, 400, "Transaction Rejected!!"])
-    }
-
-    public func transactionAccepted(_ payData: PayResponse) {
-        self.delegate?.rnTransactionAccepted(payResponseToDictionary(payData: payData))
-        self.successCallback([true, 0, "", ""])
-    }
-
-    public func transactionAccepted(_ payData: PayResponse, savedCardData: SaveCardResponse) {
-        self.delegate?.rnTransactionAccepted(payResponseToDictionary(payData: payData), savedCardData: saveCardResponseToDictionary(savedCardData: savedCardData))
-        self.successCallback([true, 0, "", savedCardData.token])
-    }
-
-    public func userDidCancel3dSecurePayment(_ pendingPayData: PayResponse) {
-        self.delegate?.rnUserDidCancel3dSecurePayment(payResponseToDictionary(payData: pendingPayData))
-        self.successCallback([false, 0, "User canceled 3-d secure verification!!"])
-    }
-
-    public func userDidCancel() {
-        self.delegate?.rnUserDidCancel()
-        self.successCallback([false, 0, "User canceled!!"])
-    }
 
     func saveCardResponseToDictionary(savedCardData: SaveCardResponse) -> [String : Any] {
         return [
