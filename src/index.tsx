@@ -21,3 +21,9 @@ export const onEvent: OnEvent = paymobEventEmitter.addListener;
 export const removeEvent: RemoveEvent = paymobEventEmitter.removeListener;
 
 export const Paymob = NativePaymob as PaymobT;
+
+export default {
+  ...Paymob,
+  onEvent,
+  removeEvent,
+};
