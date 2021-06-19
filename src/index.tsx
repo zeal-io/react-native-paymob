@@ -6,7 +6,11 @@ const { Paymob: NativePaymob } = NativeModules;
 export type DidDismissData =
   | { type: 'userDidCancel' }
   | { type: 'userDidCancel3dSecurePayment'; pendingPayData: PayResponse }
-  | { type: 'transactionAccepted'; payData: SaveCardResponse }
+  | {
+      type: 'transactionAccepted';
+      payData: PayResponse;
+      savedCardData: SaveCardResponse;
+    }
   | { type: 'paymentAttemptFailed'; detailedDescription: PayResponse }
   | { type: 'transactionRejected'; payData: PayResponse }
   | { type: 'paymentAttemptFailed'; detailedDescription: string };

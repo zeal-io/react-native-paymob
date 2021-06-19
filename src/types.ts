@@ -33,8 +33,8 @@ export interface SaveCardResponse {
   created_at: string;
   masked_pan: string;
   merchant_id: number;
-  order_id?: number;
-  email?: string;
+  // order_id?: number;
+  // email?: string;
 }
 
 export interface BillingData {

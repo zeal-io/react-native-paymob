@@ -57,14 +57,24 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
     public func transactionAccepted(_ payData: PayResponse, savedCardData: SaveCardResponse) {
         sendEvent(withName: "didDismiss", body: [
             "type": "transactionAccepted",
-            "payData": payResponseToDictionary(payData)
+            "payData": payResponseToDictionary(payData),
+            "savedCardData": [
+                "card_subtype": savedCardData.card_subtype,
+                "id": savedCardData.id,
+                "token": savedCardData.token,
+                "masked_pan": savedCardData.masked_pan,
+                "merchant_id": savedCardData.merchant_id,
+            // .  "email": savedCardData.email,
+            //    "order_id": savedCardData.order_id
+            ]
+
         ])
     }
 
     public func userDidCancel3dSecurePayment(_ pendingPayData: PayResponse) {
         sendEvent(withName: "didDismiss", body: [
             "type": "userDidCancel3dSecurePayment",
-            "SaveCardResponse": payResponseToDictionary(pendingPayData)
+            "pendingPayData": payResponseToDictionary(pendingPayData)
         ])
     }
 
@@ -79,8 +89,9 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
 
 
     func payResponseToDictionary(_ payData: PayResponse) -> [String : Any] {
+        print(payData)
         return [
-            "amount_cents": payData.amount_cents,
+             "amount_cents": payData.amount_cents,
              "is_refunded": payData.is_refunded,
              "is_capture": payData.is_capture,
              "captured_amount": payData.captured_amount,
