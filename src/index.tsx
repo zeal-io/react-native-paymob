@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { NativeEventEmitter, NativeModules } from 'react-native';
 import type { PaymobT, PayResponse, SaveCardResponse } from './types';
 const { Paymob: NativePaymob } = NativeModules;
@@ -12,14 +13,13 @@ export type DidDismissData =
 
 export const paymobEventEmitter = new NativeEventEmitter(NativePaymob);
 
-type Handler = (data: DidDismissData) => void;
+type Handler = (data: DidDismissData) => Promise<void>;
 
-export function onDismiss(handler: Handler) {
-  return paymobEventEmitter.addListener('didDismiss', handler);
-}
-
-export function removeOnDismiss(handler: Handler) {
-  return paymobEventEmitter.removeListener('didDismiss', handler);
+export function useDidDismissPaymob(cb: Handler) {
+  React.useEffect(() => {
+    const subscription = paymobEventEmitter.addListener('didDismiss', cb);
+    return () => subscription.remove();
+  }, [cb]);
 }
 
 export const Paymob: PaymobT = NativePaymob;
