@@ -1,17 +1,23 @@
-import { NativeModules, NativeEventEmitter } from 'react-native';
+import { NativeEventEmitter, NativeModules } from 'react-native';
+import type { PaymobT, PayResponse, SaveCardResponse } from './types';
+const { Paymob: NativePaymob } = NativeModules;
 
-interface PaymobT {
-  payWithNoToken: (
-    data: any,
-    successCallback: (data: any) => void,
-    errorCallback: (error: any) => void
-  ) => void;
-  presentPayVC: () => void;
-}
+type Data =
+  | { type: 'userDidCancel' }
+  | { type: 'userDidCancel3dSecurePayment'; data: PayResponse }
+  | { type: 'transactionAccepted'; data: SaveCardResponse }
+  | { type: 'transactionAccepted'; data: PayResponse }
+  | { type: 'transactionRejected'; data: PayResponse }
+  | { type: 'paymentAttemptFailed'; data: string };
 
-const { Paymob } = NativeModules;
-export default Paymob as PaymobT;
+const paymobEventEmitter = new NativeEventEmitter(NativePaymob);
 
-new NativeEventEmitter(Paymob).addListener('didDismiss', (...stuff) => {
-  console.log(stuff);
-});
+type OnEvent = (name: 'onDismiss', data: Data) => void;
+type RemoveEvent = (name: 'onDismiss') => void;
+
+// @ts-ignore
+export const onEvent: OnEvent = paymobEventEmitter.addListener;
+// @ts-ignore
+export const removeEvent: RemoveEvent = paymobEventEmitter.removeListener;
+
+export const Paymob = NativePaymob as PaymobT;

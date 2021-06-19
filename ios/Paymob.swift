@@ -11,12 +11,10 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
         accept.delegate = self
     }
 
-    @objc func presentPayVC(_ data: [String: Any],
-                            promiseResolver: @escaping RCTPromiseResolveBlock,
-                            promiseRejecter: @escaping RCTPromiseRejectBlock ){
+    @objc func presentPayVC(_ data: [String: Any], promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock ){
         DispatchQueue.main.async {
             do {
-            try self.accept.presentPayVC(
+              try self.accept.presentPayVC(
                 vC: UIApplication.shared.keyWindow!.rootViewController!,
                 billingData: data["billingData"] as! [String: String],
                 paymentKey: data["paymentKey"] as! String,
@@ -30,34 +28,51 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
             } catch AcceptSDKError.MissingArgumentError(let errorMessage) {
               promiseRejecter("AcceptSDKError", errorMessage, nil)
             }  catch let error {
-                promiseRejecter("error", error.localizedDescription, nil)
+              promiseRejecter("error", error.localizedDescription, nil)
             }
         }
     }
 
     public func paymentAttemptFailed(_ error: AcceptSDKError, detailedDescription: String) {
-        sendEvent(withName: "didDismiss", body: "paymentAttemptFailed")
+        sendEvent(withName: "didDismiss", body: [
+            "type": "paymentAttemptFailed",
+            "detailedDescription": detailedDescription
+        ])
     }
 
     public func transactionRejected(_ payData: PayResponse) {
-        sendEvent(withName: "didDismiss", body: "transactionRejected")
+        sendEvent(withName: "didDismiss", body: [
+            "type":  "transactionRejected",
+            "payData": payData
+        ])
     }
 
     public func transactionAccepted(_ payData: PayResponse) {
-        sendEvent(withName: "didDismiss", body: "transactionAccepted")
+        sendEvent(withName: "didDismiss", body: [
+            "type": "transactionAccepted",
+            "payData" : payData
+        ])
     }
 
     public func transactionAccepted(_ payData: PayResponse, savedCardData: SaveCardResponse) {
-        sendEvent(withName: "didDismiss", body: "transactionAccepted")
+        sendEvent(withName: "didDismiss", body: [
+            "type": "transactionAccepted",
+            "SaveCardResponse": savedCardData
+        ])
     }
 
 
     public func userDidCancel3dSecurePayment(_ pendingPayData: PayResponse) {
-        sendEvent(withName: "didDismiss", body: "userDidCancel3dSecurePayment")
+        sendEvent(withName: "didDismiss", body: [
+            "type": "userDidCancel3dSecurePayment",
+            "SaveCardResponse": pendingPayData
+        ])
     }
 
     public func userDidCancel() {
-        sendEvent(withName: "didDismiss", body: "userDidCancel")
+        sendEvent(withName: "didDismiss", body: [
+            "type": "userDidCancel",
+        ])
     }
     override func supportedEvents() -> [String]! {
         return ["didDismiss"]
