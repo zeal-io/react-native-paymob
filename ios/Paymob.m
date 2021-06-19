@@ -1,44 +1,13 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
-#import <React/RCTViewManager.h>
+#import <React/RCTEventEmitter.h>
 
 
-@interface RCT_EXTERN_MODULE(Paymob, RCTViewManager)
-
+@interface RCT_EXTERN_MODULE(Paymob, RCTEventEmitter)
 RCT_EXTERN_METHOD(
-  payWithNoToken:(NSDictionary *)data
-  successCallback:(RCTResponseSenderBlock)successCallback
-  errorCallback:(RCTResponseErrorBlock)errorCallback
+  presentPayVC:
+  (NSDictionary*) data
+  promiseResolver:(RCTPromiseResolveBlock *)promiseResolver
+  promiseRejecter:(RCTPromiseRejectBlock *)promiseRejecter
 )
-
-RCT_EXTERN_METHOD(
-  presentPayVC:(UIViewController)vc
-  billingData:(NSDictionary<NSString,NSString>)billingData
-  paymentKey:(NSString) paymentKey
-  saveCardDefault: (BOOL)saveCardDefault
-  showSaveCard: (BOOL)showSaveCard
-  showAlerts: (BOOL)showAlerts
-  token(NSString): [token
-  maskedPanNumber:(NSString)maskedPanNumber
-  buttonsColor:(UIColor)buttonsColor
-  isEnglish: (BOOL)isEnglish
-  backgroundColor:(UIColor)backgroundColor
-  navBarColor:(UIColor)navBarColor
-  textFieldBackgroundColor:(UIColor)textFieldBackgroundColor
-  textFieldTextColor:(UIColor)textFieldTextColor
-  titleLabelTextColor:(UIColor)titleLabelTextColor
-  inputLabelTextColor:(UIColor)inputLabelTextColor
-  buttonText:(NSString) buttonText
-  cardNameLabelText:(NSString) cardNameLabelText
-  cardNumberLabelText:(NSString) cardNumberLabelText
-  expirationLabelText:(NSString) expirationLabelText
-  cvvLabelText:(NSString) cvvLabelText
-)
-
-+ (BOOL)requiresMainQueueSetup
-{
-    return YES;
-}
-
-
 @end
