@@ -4,7 +4,7 @@ import AcceptSDK
 
 @objc(Paymob)
 class Paymob: RCTEventEmitter, AcceptSDKDelegate {
-    let accept: AcceptSDK = AcceptSDK()
+    let accept = AcceptSDK()
 
     override init() {
         super.init()
@@ -43,14 +43,14 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
     public func transactionRejected(_ payData: PayResponse) {
         sendEvent(withName: "didDismiss", body: [
             "type":  "transactionRejected",
-            "payData": payData
+            "payData" : payResponseToDictionary(payData)
         ])
     }
 
     public func transactionAccepted(_ payData: PayResponse) {
         sendEvent(withName: "didDismiss", body: [
             "type": "transactionAccepted",
-            "payData" : payData
+            "payData" : payResponseToDictionary(payData)
         ])
     }
 
@@ -61,11 +61,10 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
         ])
     }
 
-
     public func userDidCancel3dSecurePayment(_ pendingPayData: PayResponse) {
         sendEvent(withName: "didDismiss", body: [
             "type": "userDidCancel3dSecurePayment",
-            "SaveCardResponse": pendingPayData
+            "SaveCardResponse": payResponseToDictionary(pendingPayData)
         ])
     }
 
@@ -76,5 +75,36 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
     }
     override func supportedEvents() -> [String]! {
         return ["didDismiss"]
+    }
+
+
+    func payResponseToDictionary(_ payData: PayResponse) -> [String : Any] {
+        return [
+            "amount_cents": payData.amount_cents,
+             "is_refunded": payData.is_refunded,
+             "is_capture": payData.is_capture,
+             "captured_amount": payData.captured_amount,
+             "source_data_type": payData.source_data_type,
+             "pending": payData.pending,
+             "is_3d_secure": payData.is_3d_secure,
+             "id": payData.id,
+             "is_void": payData.is_void,
+             "currency": payData.currency,
+             "is_auth": payData.is_auth,
+             "is_refund": payData.is_refund,
+             "owner": payData.owner,
+             "is_voided": payData.is_voided,
+             "source_data_pan": payData.source_data_pan,
+             "profile_id": payData.profile_id,
+             "success": payData.success,
+             "dataMessage": payData.dataMessage,
+             "source_data_sub_type": payData.source_data_sub_type,
+             "error_occured": payData.error_occured,
+             "is_standalone_payment": payData.is_standalone_payment,
+             "created_at": payData.created_at,
+             "refunded_amount_cents": payData.refunded_amount_cents,
+             "integration_id": payData.integration_id,
+             "order": payData.order
+        ] as [String : Any]
     }
 }
