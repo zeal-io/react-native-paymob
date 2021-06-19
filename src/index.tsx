@@ -10,20 +10,14 @@ type Data =
   | { type: 'transactionRejected'; data: PayResponse }
   | { type: 'paymentAttemptFailed'; data: string };
 
-const paymobEventEmitter = new NativeEventEmitter(NativePaymob);
+export const paymobEventEmitter = new NativeEventEmitter(NativePaymob);
 
-type OnEvent = (name: 'onDismiss', data: Data) => void;
-type RemoveEvent = (name: 'onDismiss') => void;
+export function onDismiss(handler: (data: Data) => void) {
+  return paymobEventEmitter.addListener('onDismiss', handler);
+}
 
-// @ts-ignore
-export const onEvent: OnEvent = paymobEventEmitter.addListener;
-// @ts-ignore
-export const removeEvent: RemoveEvent = paymobEventEmitter.removeListener;
+export function removeOnDismiss(handler: (data: Data) => void) {
+  return paymobEventEmitter.removeListener('onDismiss', handler);
+}
 
-export const Paymob = NativePaymob as PaymobT;
-
-export default {
-  ...Paymob,
-  onEvent,
-  removeEvent,
-};
+export const Paymob: PaymobT = NativePaymob;
