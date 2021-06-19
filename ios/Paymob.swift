@@ -17,14 +17,14 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
         DispatchQueue.main.async {
             do {
             try self.accept.presentPayVC(
-                 vC: UIApplication.shared.keyWindow!.rootViewController!,
-                 billingData: data["billingData"] as! [String: String],
-                 paymentKey: data["paymentKey"] as! String,
-                 saveCardDefault: true,
-                 showSaveCard: false,
-                 showAlerts: true,
-                 buttonsColor: UIColor.black,
-                 isEnglish: false
+                vC: UIApplication.shared.keyWindow!.rootViewController!,
+                billingData: data["billingData"] as! [String: String],
+                paymentKey: data["paymentKey"] as! String,
+                saveCardDefault: data["saveCardDefault"] as! Bool,
+                showSaveCard: data["showSaveCard"] as! Bool,
+                showAlerts: data["showAlerts"] as! Bool,
+                isEnglish: data["isEnglish"] as! Bool,
+                showScanCardButton: data["showScanCardButton"] as! Bool
               )
               promiseResolver(true)
             } catch AcceptSDKError.MissingArgumentError(let errorMessage) {
