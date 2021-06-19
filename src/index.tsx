@@ -13,11 +13,11 @@ type Data =
 export const paymobEventEmitter = new NativeEventEmitter(NativePaymob);
 
 export function onDismiss(handler: (data: Data) => void) {
-  return paymobEventEmitter.addListener('onDismiss', handler);
+  return paymobEventEmitter.addListener('didDismiss', handler);
 }
 
 export function removeOnDismiss(handler: (data: Data) => void) {
-  return paymobEventEmitter.removeListener('onDismiss', handler);
+  return paymobEventEmitter.removeListener('didDismiss', handler);
 }
 
 export const Paymob: PaymobT = NativePaymob;
