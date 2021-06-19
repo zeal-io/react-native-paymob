@@ -58,7 +58,6 @@ public class PaymobModule extends ReactContextBaseJavaModule {
     // String themeColor = (String) data.get("themeColor");
     // if(themeColor != null){
     // pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR, Integer.parseInt(themeColor, 16));
-
     // }
 
     currentActivity.startActivityForResult(pay_intent, ACCEPT_PAYMENT_REQUEST);
