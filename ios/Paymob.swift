@@ -57,7 +57,7 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
     public func transactionAccepted(_ payData: PayResponse, savedCardData: SaveCardResponse) {
         sendEvent(withName: "didDismiss", body: [
             "type": "transactionAccepted",
-            "SaveCardResponse": savedCardData
+            "payData": payResponseToDictionary(payData)
         ])
     }
 

@@ -5,11 +5,11 @@ const { Paymob: NativePaymob } = NativeModules;
 
 export type DidDismissData =
   | { type: 'userDidCancel' }
-  | { type: 'userDidCancel3dSecurePayment'; data: PayResponse }
-  | { type: 'transactionAccepted'; data: SaveCardResponse }
-  | { type: 'transactionAccepted'; data: PayResponse }
-  | { type: 'transactionRejected'; data: PayResponse }
-  | { type: 'paymentAttemptFailed'; data: string };
+  | { type: 'userDidCancel3dSecurePayment'; pendingPayData: PayResponse }
+  | { type: 'transactionAccepted'; payData: SaveCardResponse }
+  | { type: 'paymentAttemptFailed'; detailedDescription: PayResponse }
+  | { type: 'transactionRejected'; payData: PayResponse }
+  | { type: 'paymentAttemptFailed'; detailedDescription: string };
 
 export const paymobEventEmitter = new NativeEventEmitter(NativePaymob);
 

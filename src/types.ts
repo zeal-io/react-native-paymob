@@ -37,7 +37,7 @@ export interface SaveCardResponse {
   email?: string;
 }
 
-export interface billingData {
+export interface BillingData {
   apartment: string;
   email: string;
   floor: string;
@@ -54,5 +54,21 @@ export interface billingData {
 }
 
 export interface PaymobT {
-  presentPayVC: () => void;
+  presentPayVC: ({
+    billingData,
+    paymentKey,
+    saveCardDefault,
+    showSaveCard,
+    showAlerts,
+    isEnglish,
+    showScanCardButton,
+  }: {
+    billingData: BillingData;
+    paymentKey: string;
+    saveCardDefault: boolean;
+    showSaveCard: boolean;
+    showAlerts: boolean;
+    isEnglish: boolean;
+    showScanCardButton: boolean;
+  }) => void;
 }
