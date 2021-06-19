@@ -2,7 +2,7 @@ import { NativeEventEmitter, NativeModules } from 'react-native';
 import type { PaymobT, PayResponse, SaveCardResponse } from './types';
 const { Paymob: NativePaymob } = NativeModules;
 
-type Data =
+export type DidDismissData =
   | { type: 'userDidCancel' }
   | { type: 'userDidCancel3dSecurePayment'; data: PayResponse }
   | { type: 'transactionAccepted'; data: SaveCardResponse }
@@ -12,11 +12,13 @@ type Data =
 
 export const paymobEventEmitter = new NativeEventEmitter(NativePaymob);
 
-export function onDismiss(handler: (data: Data) => void) {
+type Handler = (data: DidDismissData) => void;
+
+export function onDismiss(handler: Handler) {
   return paymobEventEmitter.addListener('didDismiss', handler);
 }
 
-export function removeOnDismiss(handler: (data: Data) => void) {
+export function removeOnDismiss(handler: Handler) {
   return paymobEventEmitter.removeListener('didDismiss', handler);
 }
 
