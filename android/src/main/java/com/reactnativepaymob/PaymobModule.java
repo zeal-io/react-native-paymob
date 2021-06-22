@@ -62,34 +62,31 @@ public class PaymobModule extends ReactContextBaseJavaModule {
         Activity currentActivity = getCurrentActivity();
         Intent pay_intent = new Intent(currentActivity, PayActivity.class);
 
-        pay_intent.putExtra(PayActivityIntentKeys.PAYMENT_KEY, "ZXlKMGVYQWlPaUpLVjFRaUxDSmhiR2NpT2lKSVV6VXhNaUo5LmV5SjFjMlZ5WDJsa0lqb3pOVFUxTENKdmNtUmxjbDlwWkNJNk5qRXpNams0TUN3aVkzVnljbVZ1WTNraU9pSkZSMUFpTENKcGJuUmxaM0poZEdsdmJsOXBaQ0k2TkRnMU9Dd2liRzlqYTE5dmNtUmxjbDkzYUdWdVgzQmhhV1FpT21aaGJITmxMQ0ppYVd4c2FXNW5YMlJoZEdFaU9uc2labWx5YzNSZmJtRnRaU0k2SWtOc2FXWm1iM0prSWl3aWJHRnpkRjl1WVcxbElqb2lUbWxqYjJ4aGN5SXNJbk4wY21WbGRDSTZJa1YwYUdGdUlFeGhibVFpTENKaWRXbHNaR2x1WnlJNklqZ3dNamdpTENKbWJHOXZjaUk2SWpReUlpd2lZWEJoY25SdFpXNTBJam9pT0RBeklpd2lZMmwwZVNJNklrcGhjMnR2YkhOcmFXSjFjbWRvSWl3aWMzUmhkR1VpT2lKVmRHRm9JaXdpWTI5MWJuUnllU0k2SWtOU0lpd2laVzFoYVd3aU9pSmpiR0YxWkdWMGRHVXdPVUJsZUdFdVkyOXRJaXdpY0dodmJtVmZiblZ0WW1WeUlqb2lLemcyS0RncE9URXpOVEl4TURRNE55SXNJbkJ2YzNSaGJGOWpiMlJsSWpvaU1ERTRPVGdpTENKbGVIUnlZVjlrWlhOamNtbHdkR2x2YmlJNklrNUJJbjBzSW1WNGNDSTZNell3TURBd01EQXdNREF3TVRZd01ESTJNakF3T1N3aVlXMXZkVzUwWDJObGJuUnpJam8xTURBd01EQXNJbkJ0YTE5cGNDSTZJalF4TGpJek5pNHhOREF1TWpFMEluMC5yTXdsRXhiWF8xbFZsVHBIanhwaFNscDlLd3V1YzVnRVBfRy1xTFgtdHRnWW83SWJQNXpsTDFfS2RlYkxUeGlXMHl6WEM2Z29LbnVoQVAxMjV5RWExUQ==");
-        pay_intent.putExtra(PayActivityIntentKeys.THREE_D_SECURE_ACTIVITY_TITLE, "Verification");
-        pay_intent.putExtra("language","ar");
-        pay_intent.putExtra(PayActivityIntentKeys.TOKEN, "6088c38c19705a495f1727561d4f4814b2ed7e45e9cd80c72f233253");
-        pay_intent.putExtra(PayActivityIntentKeys.MASKED_PAN_NUMBER, "xxxx-xxxx-xxxx-1234");
-        pay_intent.putExtra(PayActivityIntentKeys.SAVE_CARD_DEFAULT, false);
-        pay_intent.putExtra(PayActivityIntentKeys.SHOW_SAVE_CARD, false);
-        pay_intent.putExtra("ActionBar",true);
-        // pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR,getResources().getColor(R.color.ThemeColor));
+        pay_intent.putExtra(PayActivityIntentKeys.PAYMENT_KEY, params.getString("paymentKey"));
+        pay_intent.putExtra(PayActivityIntentKeys.SAVE_CARD_DEFAULT, params.getBoolean("saveCardDefault"));
+        pay_intent.putExtra(PayActivityIntentKeys.SHOW_SAVE_CARD, params.getBoolean("showSaveCard"));
 
-        pay_intent.putExtra( PayActivityIntentKeys.FIRST_NAME, "Cliffo");
-        pay_intent.putExtra(PayActivityIntentKeys.LAST_NAME, "Nicol");
-        pay_intent.putExtra(PayActivityIntentKeys.BUILDING,"8028");
-        pay_intent.putExtra(PayActivityIntentKeys.FLOOR, "42");
-        pay_intent.putExtra(PayActivityIntentKeys.APARTMENT, "803");
-        pay_intent.putExtra(PayActivityIntentKeys.CITY, "Jask");
-        pay_intent.putExtra(PayActivityIntentKeys.STATE, "Uta");
-        pay_intent.putExtra(PayActivityIntentKeys.COUNTRY,"CR" );
-        pay_intent.putExtra(PayActivityIntentKeys.EMAIL, "claudette09@exa.com");
-        pay_intent.putExtra(PayActivityIntentKeys.PHONE_NUMBER, "+86(8)9135210487");
-        pay_intent.putExtra(PayActivityIntentKeys.POSTAL_CODE,  "01898");
+        pay_intent.putExtra("language", params.getBoolean("isEnglish") ? "en" : "ar");
+        pay_intent.putExtra("ActionBar", true);
+
+        ReadableMap billingData = params.getMap("billingData");
+        pay_intent.putExtra( PayActivityIntentKeys.FIRST_NAME, billingData.getString("first_name"));
+        pay_intent.putExtra(PayActivityIntentKeys.LAST_NAME, billingData.getString("last_name"));
+        pay_intent.putExtra(PayActivityIntentKeys.BUILDING, billingData.getString("building"));
+        pay_intent.putExtra(PayActivityIntentKeys.FLOOR, billingData.getString("floor"));
+        pay_intent.putExtra(PayActivityIntentKeys.APARTMENT, billingData.getString("apartment"));
+        pay_intent.putExtra(PayActivityIntentKeys.CITY, billingData.getString("city"));
+        pay_intent.putExtra(PayActivityIntentKeys.STATE, billingData.getString("state"));
+        pay_intent.putExtra(PayActivityIntentKeys.COUNTRY, billingData.getString("country"));
+        pay_intent.putExtra(PayActivityIntentKeys.EMAIL, billingData.getString("email"));
+        pay_intent.putExtra(PayActivityIntentKeys.PHONE_NUMBER, billingData.getString("phone_number"));
+        pay_intent.putExtra(PayActivityIntentKeys.POSTAL_CODE, billingData.getString("postal_code") );
 
         currentActivity.startActivityForResult(pay_intent, 10);
         promise.resolve(12345);
     } catch(Exception e) {
         promise.reject("Create Event Error", e);
     }
-
   }
 
   @Override
