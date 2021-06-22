@@ -120,30 +120,27 @@ class Paymob: NSObject, AcceptSDKDelegate{
 
     public func _payWithNoToken(_ data:NSDictionary, successCallback: @escaping RCTPromiseResolveBlock, errorCallback: @escaping RCTPromiseRejectBlock) {
     }
-    @objc func presentPayVC(vC: UIViewController, billingData: [String : String], paymentKey: String, saveCardDefault: Bool, showSaveCard: Bool, showAlerts: Bool, token: String? = nil, maskedPanNumber: String? = nil, buttonsColor: UIColor? = nil, isEnglish: Bool = true, backgroundColor: UIColor? = nil, navBarColor: UIColor? = nil, navBarTextColor: UIColor? = nil, textFieldBackgroundColor: UIColor? = nil, textFieldTextColor: UIColor? = nil, titleLabelTextColor: UIColor? = nil, inputLabelTextColor: UIColor? = nil, buttonText: String = "", cardNameLabelText: String = "", cardNumberLabelText: String = "", expirationLabelText: String = "", cvvLabelText: String = "") {
 
-        do {
-            try accept.presentPayVC(vC: vC,
-                                    billingData: billingData,
-                                    paymentKey: paymentKey,
-                                    saveCardDefault: saveCardDefault,
-                                    showSaveCard: showSaveCard,
-                                    showAlerts: showAlerts,
-                                    token: token,
-                                    maskedPanNumber: maskedPanNumber,
-                                    buttonsColor: buttonsColor,
-                                    isEnglish: isEnglish,
-                                    backgroundColor: backgroundColor,
-                                    navBarColor: navBarColor,
-                                    navBarTextColor: navBarTextColor,
-                                    textFieldBackgroundColor: textFieldBackgroundColor,
-                                    textFieldTextColor: textFieldTextColor,
-                                    titleLabelTextColor: titleLabelTextColor,
-                                    inputLabelTextColor: inputLabelTextColor)
-        } catch let error as NSError {
-                print("\(error.userInfo)")
+    @objc func presentPayVC(_ data: [String: Any], promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock ){
+        DispatchQueue.main.async {
+            do {
+              try self.accept.presentPayVC(
+                vC: UIApplication.shared.keyWindow!.rootViewController!,
+                billingData: data["billingData"] as! [String: String],
+                paymentKey: data["paymentKey"] as! String,
+                saveCardDefault: data["saveCardDefault"] as! Bool,
+                showSaveCard: data["showSaveCard"] as! Bool,
+                showAlerts: data["showAlerts"] as! Bool,
+                isEnglish: data["isEnglish"] as! Bool,
+                showScanCardButton: data["showScanCardButton"] as! Bool
+              )
+              promiseResolver(true)
+            } catch AcceptSDKError.MissingArgumentError(let errorMessage) {
+              promiseRejecter("AcceptSDKError", errorMessage, nil)
+            }  catch let error {
+              promiseRejecter("error", error.localizedDescription, nil)
+            }
         }
-
     }
 
 
@@ -160,10 +157,11 @@ class Paymob: NSObject, AcceptSDKDelegate{
         ] as [String : Any]
     }
 
-    func payResponseToDictionary(payData: PayResponse) -> [String : Any] {
 
+    func payResponseToDictionary(_ payData: PayResponse) -> [String : Any] {
+        print(payData)
         return [
-            "amount_cents": payData.amount_cents,
+             "amount_cents": payData.amount_cents,
              "is_refunded": payData.is_refunded,
              "is_capture": payData.is_capture,
              "captured_amount": payData.captured_amount,
