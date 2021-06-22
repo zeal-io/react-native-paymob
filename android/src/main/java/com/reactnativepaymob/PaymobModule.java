@@ -5,6 +5,7 @@ import android.app.Activity;
 
 
 import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
@@ -12,6 +13,9 @@ import com.facebook.react.bridge.BaseActivityEventListener;
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.Arguments;
 
 import com.paymob.acceptsdk.IntentConstants;
 import com.paymob.acceptsdk.PayActivity;
@@ -30,12 +34,30 @@ public class PaymobModule extends ReactContextBaseJavaModule {
 
   public PaymobModule(ReactApplicationContext reactContext) {
     super(reactContext);
+    reactContext.addActivityEventListener(mActivityEventListener);
     this.reactContext = reactContext;
   }
 
+  private void sendEvent(ReactContext reactContext, String eventName, WritableMap params) {
+    reactContext
+     .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+     .emit(eventName, params);
+  }
+
+
+  private final ActivityEventListener mActivityEventListener = new BaseActivityEventListener() {
+    @Override
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(activity, requestCode, resultCode, data);
+        WritableMap params = Arguments.createMap();
+        params.putString("eventProperty", "someValue");
+        System.out.println("didDismiss");
+        sendEvent(reactContext, "didDismiss", params);
+    }
+  };
 
   @ReactMethod
-  public void present(ReadableMap params, Promise promise) {
+  public void presentPayVC(ReadableMap params, Promise promise) {
      try {
         Activity currentActivity = getCurrentActivity();
         Intent pay_intent = new Intent(currentActivity, PayActivity.class);
@@ -47,7 +69,8 @@ public class PaymobModule extends ReactContextBaseJavaModule {
         pay_intent.putExtra(PayActivityIntentKeys.MASKED_PAN_NUMBER, "xxxx-xxxx-xxxx-1234");
         pay_intent.putExtra(PayActivityIntentKeys.SAVE_CARD_DEFAULT, false);
         pay_intent.putExtra(PayActivityIntentKeys.SHOW_SAVE_CARD, false);
-        pay_intent.putExtra("ActionBar", true);
+        pay_intent.putExtra("ActionBar",true);
+        // pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR,getResources().getColor(R.color.ThemeColor));
 
         pay_intent.putExtra( PayActivityIntentKeys.FIRST_NAME, "Cliffo");
         pay_intent.putExtra(PayActivityIntentKeys.LAST_NAME, "Nicol");
