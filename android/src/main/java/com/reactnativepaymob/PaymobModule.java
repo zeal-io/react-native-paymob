@@ -22,8 +22,6 @@ import com.paymob.acceptsdk.PayActivity;
 import com.paymob.acceptsdk.PayActivityIntentKeys;
 import com.paymob.acceptsdk.PayResponseKeys;
 import com.paymob.acceptsdk.SaveCardResponseKeys;
-import com.paymob.acceptsdk.ThreeDSecureWebViewActivty;
-import com.paymob.acceptsdk.ToastMaker;
 
 
 import java.util.HashMap;
@@ -63,9 +61,8 @@ public class PaymobModule extends ReactContextBaseJavaModule {
                 // You forgot to pass an important key-value pair in the intent's extras
                 // ToastMaker.displayShortToast(this, "Missing Argument == " + extras.getString(IntentConstants.MISSING_ARGUMENT_VALUE));
             } else if (resultCode == IntentConstants.TRANSACTION_ERROR) {
-                // An error occurred while handling an API's response
-                // ToastMaker.displayShortToast(this, "Reason == " + extras.getString(IntentConstants.TRANSACTION_ERROR_REASON));
                 params.putString("type", "paymentAttemptFailed");
+                params.putString("detailedDescription", extras.getString(IntentConstants.TRANSACTION_ERROR_REASON));
                 sendEvent(reactContext, "didDismiss", params);
             } else if (resultCode == IntentConstants.TRANSACTION_REJECTED) {
                 // User attempted to pay but their transaction was rejected
@@ -85,7 +82,7 @@ public class PaymobModule extends ReactContextBaseJavaModule {
                 // ToastMaker.displayShortToast(this, extras.getString(PayResponseKeys.DATA_MESSAGE));
 
                 params.putString("type", "transactionAccepted");
-                params.putString("token",extras.getString(SaveCardResponseKeys.TOKEN));
+                params.putString("token", extras.getString(SaveCardResponseKeys.TOKEN));
                 sendEvent(reactContext, "didDismiss", params);
             } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_PARSING_ISSUE) {
                 // User finished their payment successfully. An error occured while reading the returned JSON.
@@ -93,9 +90,53 @@ public class PaymobModule extends ReactContextBaseJavaModule {
 
                 // ToastMaker.displayShortToast(this, extras.getString(IntentConstants.RAW_PAY_RESPONSE));
             } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_CARD_SAVED) {
-                params.putString("type", "transactionAccepted");
-                params.putString("type2", "transactionAcceptedCardSaved");
-                params.putString("token",extras.getString(SaveCardResponseKeys.TOKEN));
+                //
+
+              params.putString("type", "transactionAccepted");
+
+              WritableMap payData = Arguments.createMap();
+
+              payData.putInt("amount_cents", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
+              payData.putBoolean("is_refunded", extras.getBoolean(PayResponseKeys.IS_REFUNDED));
+              payData.putInt("captured_amount", extras.getInt(PayResponseKeys.CAPTURED_AMOUNT));
+
+              payData.putString("source_data_type", extras.getString(PayResponseKeys.SOURCE_DATA_SUB_TYPE));
+              payData.putString("currency", extras.getString(PayResponseKeys.CURRENCY));
+
+              payData.putBoolean("is_void", extras.getBoolean(PayResponseKeys.IS_VOID));
+              payData.putBoolean("pending",  extras.getBoolean(PayResponseKeys.PENDING));
+              payData.putBoolean("is_3d_secure", extras.getBoolean(PayResponseKeys.IS_3D_SECURE));
+              payData.putBoolean("is_auth", extras.getBoolean(PayResponseKeys.IS_AUTH));
+              payData.putBoolean("is_refund", extras.getBoolean(PayResponseKeys.IS_REFUND));
+              payData.putBoolean("is_voided", extras.getBoolean(PayResponseKeys.IS_VOIDED));
+              payData.putBoolean("success", extras.getBoolean(PayResponseKeys.SUCCESS));
+              payData.putBoolean("error_occured", extras.getBoolean(PayResponseKeys.ERROR_OCCURED));
+              payData.putBoolean("is_standalone_payment", extras.getBoolean(PayResponseKeys.IS_STANDALONE_PAYMENT));
+
+              payData.putInt("id", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
+              payData.putInt("owner", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
+              payData.putInt("profile_id", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
+              payData.putInt("refunded_amount_cents", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
+              payData.putInt("integration_id", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
+              payData.putInt("order", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
+
+
+              payData.putString("source_data_pan", "");
+              payData.putString("created_at", "");
+              payData.putString("source_data_sub_type", "");
+              payData.putString("dataMessage", "");
+
+
+              WritableMap savedCardData = Arguments.createMap();
+              savedCardData.putString("token", extras.getString(SaveCardResponseKeys.TOKEN));
+              savedCardData.putString("card_subtype", extras.getString(SaveCardResponseKeys.CARD_SUBTYPE));
+              savedCardData.putString("id", extras.getString(SaveCardResponseKeys.ID));
+              savedCardData.putString("masked_pan", extras.getString(SaveCardResponseKeys.MASKED_PAN));
+              savedCardData.putString("merchant_id", extras.getString(SaveCardResponseKeys.MERCHANT_ID));
+
+              params.putMap("payData", payData);
+              params.putMap("savedCardData", savedCardData);
+
                 sendEvent(reactContext, "didDismiss", params);
             } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_PARSING_ISSUE) {
                 // User finished their payment successfully and card was saved.
