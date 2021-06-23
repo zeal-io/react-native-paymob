@@ -5,7 +5,7 @@ react native paymob sdk
 ## Installation
 
 ```sh
-yarn add https://github.com/a-eid/react-native-paymob#eventEmitter
+yarn add https://github.com/a-eid/react-native-paymob
 ```
 
 ###  IOS
