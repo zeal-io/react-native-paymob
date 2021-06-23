@@ -8,6 +8,9 @@ react native paymob sdk
 yarn add https://github.com/a-eid/react-native-paymob#eventEmitter
 ```
 
+###  IOS
+IOS installation is almost automatic, the one thing you need to do is to create an empty `Swift` file in your project.
+
 ## Usage
 
 ```js
