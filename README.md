@@ -29,6 +29,25 @@ there should be a swift file and a bridging header in your project.
 
 
 
+### Android 
+
+1- in `AndroidManifest.xml` 
+  - add `xmlns:tools="http://schemas.android.com/tools"` to `manifest` tag 
+  - make sure to have these 2 attributes in the `application` tag 
+      `android:supportsRtl="false"`
+      `tools:replace="android:supportsRtl, android:allowBackup"` 
+  - make sure to have the following values in `android/app/res/values/colors.xml` ( create the file if you don't have it already )
+   ```xml 
+     <resources>
+        <color name="white">#FFF</color>
+        <color name="colorPrimary">#6200EE</color>
+        <color name="colorPrimaryDark">#03DAC5</color>
+        <color name="colorAccent">#03DAC5</color>
+        <color name="ThemeColor"> 	#FF0000 </color>
+      </resources>
+    ```
+
+
 ## Usage
 
 ```js
@@ -44,13 +63,39 @@ useDidDismissPaymob(
 
 
 // some event handler
-
-Paymob.presentPayVC(...)
+   Paymob.presentPayVC({
+      billingData: {
+        apartment: 'NA',
+        email: 'NA',
+        floor: 'NA',
+        first_namae: 'NA',
+        street: 'NA',
+        building: 'NA',
+        phone_number: 'NA',
+        shipping_method: 'NA',
+        postal_code: 'NA',
+        city: 'NA',
+        country: 'NA',
+        last_name: 'NA',
+        state: 'NA',
+      },
+      paymentKey: "your payment key",
+      saveCardDefault: false,
+      showSaveCard: false,
+      showAlerts: false,
+      isEnglish: true,
+      showScanCardButton: false,
+    });
 ```
+
+## Note 
+
+the library was created to cover our use case only, but we are open to adding more features if we have the time.
+
 
 ## Contributing
 
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
+All Pull Requests are welcome See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 
