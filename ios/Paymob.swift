@@ -11,11 +11,22 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
         accept.delegate = self
     }
 
+    func topMostController() -> UIViewController {
+        var topController: UIViewController = UIApplication.shared.keyWindow!.rootViewController!
+        while (topController.presentedViewController != nil) {
+            topController = topController.presentedViewController!
+        }
+        return topController
+    }
+
     @objc func presentPayVC(_ data: [String: Any], promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock ){
+
         DispatchQueue.main.async {
+            let vc = self.topMostController()
             do {
               try self.accept.presentPayVC(
-                vC: UIApplication.shared.keyWindow!.rootViewController!,
+//                vC: UIApplication.shared.keyWindow!.rootViewController!,
+                vC: vc,
                 billingData: data["billingData"] as! [String: String],
                 paymentKey: data["paymentKey"] as! String,
                 saveCardDefault: data["saveCardDefault"] as! Bool,
