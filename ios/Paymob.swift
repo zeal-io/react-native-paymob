@@ -2,123 +2,13 @@ import Foundation
 import UIKit
 import AcceptSDK
 
-
-
-
 @objc(Paymob)
-class Paymob: NSObject, AcceptSDKDelegate{
-    
-    let accept: AcceptSDK = AcceptSDK()
-    
+class Paymob: RCTEventEmitter, AcceptSDKDelegate {
+    let accept = AcceptSDK()
+
     override init() {
         super.init()
         accept.delegate = self
-    }
-
-    
-    func userDidCancel() {
-        print("userDidCancel")
-    }
-
-    func paymentAttemptFailed(_ error: AcceptSDKError, detailedDescription: String) {
-        print("paymentAttemptFailed")
-    }
-    
-    func transactionRejected(_ payData: PayResponse) {
-        print("transactionRejected")
-    }
-    
-    func transactionAccepted(_ payData: PayResponse) {
-        print("transactionAccepted")
-
-    }
-    
-    func transactionAccepted(_ payData: PayResponse, savedCardData: SaveCardResponse) {
-        print("transactionAccepted")
-    }
-    
-    func userDidCancel3dSecurePayment(_ pendingPayData: PayResponse) {
-        print("userDidCancel3dSecurePayment")
-    }
-    
-
-    
-    @objc func pay(_ options: [String: Int], Resolver resolve: @escaping RCTPromiseResolveBlock,  Rejector reject: @escaping RCTPromiseRejectBlock) -> Void {
-        DispatchQueue.main.async {
-
-            let bData = [
-                "apartment": "",
-                "email": "",
-                "floor": "",
-                "first_name": "",
-                "street": "",
-                "building": "",
-                "phone_number": "",
-                "shipping_method": "",
-                "postal_code": "",
-                "city": "",
-                "country": "",
-                "last_name": "",
-                "state": ""
-            ]
-
-            do {
-                try self.accept.presentPayVC(
-                        vC: UIApplication.shared.windows.first!.rootViewController!,
-                        billingData: bData,
-                        paymentKey: "",
-                        saveCardDefault: true,
-                        showSaveCard: false,
-                        showAlerts: true,
-                        token: nil,
-                        maskedPanNumber: nil,
-                        buttonsColor: nil,
-                        isEnglish: true,
-                        showScanCardButton: false,
-                        backgroundColor: nil,
-                        navBarColor: nil,
-                        navBarTextColor: nil,
-                        textFieldBackgroundColor: nil,
-                        textFieldTextColor: nil,
-                        titleLabelTextColor: nil,
-                        inputLabelTextColor: nil,
-                        buttonText: "buttonText",
-                        cardNameLabelText: "cardNameLabelText",
-                        cardNumberLabelText: "cardNumberLabelText",
-                        expirationLabelText: "expirationLabelText",
-                        cvvLabelText: "cvLabelText"
-                )
-                resolve("success")
-
-        } catch AcceptSDKError.MissingArgumentError(let errorMessage) {
-            print(errorMessage)
-            reject("", "", nil)
-        }  catch let error {
-            print(error.localizedDescription)
-            reject("", "", nil)
-        }
-
-        }
-    }
-    
-    
-
-    func topMostController() -> UIViewController {
-        var topController: UIViewController = UIApplication.shared.keyWindow!.rootViewController!
-        while (topController.presentedViewController != nil) {
-            topController = topController.presentedViewController!
-        }
-        return topController
-    }
-
-    @objc public func payWithNoToken(_ data:NSDictionary, successCallback:  @escaping RCTPromiseResolveBlock, errorCallback:  @escaping RCTPromiseRejectBlock) {
-        DispatchQueue.main.async { [weak self] in
-            self?._payWithNoToken(data, successCallback:successCallback , errorCallback:errorCallback)
-        }
-
-    }
-
-    public func _payWithNoToken(_ data:NSDictionary, successCallback: @escaping RCTPromiseResolveBlock, errorCallback: @escaping RCTPromiseRejectBlock) {
     }
 
     @objc func presentPayVC(_ data: [String: Any], promiseResolver: @escaping RCTPromiseResolveBlock, promiseRejecter: @escaping RCTPromiseRejectBlock ){
@@ -143,18 +33,58 @@ class Paymob: NSObject, AcceptSDKDelegate{
         }
     }
 
+    public func paymentAttemptFailed(_ error: AcceptSDKError, detailedDescription: String) {
+        sendEvent(withName: "didDismiss", body: [
+            "type": "paymentAttemptFailed",
+            "detailedDescription": detailedDescription
+        ])
+    }
 
-    func saveCardResponseToDictionary(savedCardData: SaveCardResponse) -> [String : Any] {
-        return [
-            "card_subtype" : savedCardData.card_subtype,
-            "id" : savedCardData.id,
-            "token" : savedCardData.token,
-            "created_at" : savedCardData.created_at,
-            "masked_pan" : savedCardData.masked_pan,
-            "merchant_id" : savedCardData.merchant_id,
-            "order_id" : savedCardData.order_id as Any,
-            "email" : savedCardData.email as Any
-        ] as [String : Any]
+    public func transactionRejected(_ payData: PayResponse) {
+        sendEvent(withName: "didDismiss", body: [
+            "type":  "transactionRejected",
+            "payData" : payResponseToDictionary(payData)
+        ])
+    }
+
+    public func transactionAccepted(_ payData: PayResponse) {
+        sendEvent(withName: "didDismiss", body: [
+            "type": "transactionAccepted",
+            "payData" : payResponseToDictionary(payData)
+        ])
+    }
+
+    public func transactionAccepted(_ payData: PayResponse, savedCardData: SaveCardResponse) {
+        sendEvent(withName: "didDismiss", body: [
+            "type": "transactionAccepted",
+            "payData": payResponseToDictionary(payData),
+            "savedCardData": [
+                "card_subtype": savedCardData.card_subtype,
+                "id": savedCardData.id,
+                "token": savedCardData.token,
+                "masked_pan": savedCardData.masked_pan,
+                "merchant_id": savedCardData.merchant_id,
+            // .  "email": savedCardData.email,
+            //    "order_id": savedCardData.order_id
+            ]
+
+        ])
+    }
+
+    public func userDidCancel3dSecurePayment(_ pendingPayData: PayResponse) {
+        sendEvent(withName: "didDismiss", body: [
+            "type": "userDidCancel3dSecurePayment",
+            "pendingPayData": payResponseToDictionary(pendingPayData)
+        ])
+    }
+
+    public func userDidCancel() {
+        sendEvent(withName: "didDismiss", body: [
+            "type": "userDidCancel",
+        ])
+    }
+    override func supportedEvents() -> [String]! {
+        return ["didDismiss"]
     }
 
 
