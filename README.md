@@ -23,6 +23,8 @@ choose create bridging header.
 
 ![Screen Shot 2021-06-23 at 4 55 38 PM](https://user-images.githubusercontent.com/19273413/123120214-6ad2da00-d444-11eb-9ca8-83a275e6db08.png)
 
+there should be a swift file and a bridging header in your project.
+
 ![Screen Shot 2021-06-23 at 4 56 33 PM](https://user-images.githubusercontent.com/19273413/123120217-6c9c9d80-d444-11eb-8204-87b6921ebb31.png)
 
 
