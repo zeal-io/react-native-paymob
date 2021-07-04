@@ -27,7 +27,7 @@ import java.util.HashMap;
 public class PaymobModule extends ReactContextBaseJavaModule {
 
   private final ReactApplicationContext reactContext;
-  int REQUEST_CODE = 911100212;
+  int REQUEST_CODE = 30767;
 
   public PaymobModule(ReactApplicationContext reactContext) {
     super(reactContext);
