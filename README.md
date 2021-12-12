@@ -45,7 +45,7 @@ there should be a swift file and a bridging header in your project.
         <color name="colorAccent">#03DAC5</color>
         <color name="ThemeColor"> 	#FF0000 </color>
       </resources>
-    ```
+```
 
 
 ## Usage
