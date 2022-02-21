@@ -129,4 +129,8 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
              "order": payData.order
         ] as [String : Any]
     }
+
+    @objc override static func requiresMainQueueSetup() -> Bool {
+        return true
+    }
 }
