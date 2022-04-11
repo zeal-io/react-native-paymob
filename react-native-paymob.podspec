@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
-  s.dependency "AcceptCardSDK", '5.4.1'
+  s.dependency "AcceptCardSDK", '5.3.6'
   s.dependency "React-Core"
 end
