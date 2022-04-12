@@ -1,6 +1,6 @@
 {
   "name": "react-native-paymob",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "react native paymob sdk",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
