@@ -169,6 +169,7 @@ public class PaymobModule extends ReactContextBaseJavaModule {
       pay_intent.putExtra(PayActivityIntentKeys.PAYMENT_KEY, params.getString("paymentKey"));
       pay_intent.putExtra(PayActivityIntentKeys.SAVE_CARD_DEFAULT, params.getBoolean("saveCardDefault"));
       pay_intent.putExtra(PayActivityIntentKeys.SHOW_SAVE_CARD, params.getBoolean("showSaveCard"));
+      pay_intent.putExtra("PAY_BUTTON_TEXT", params.getString("buttonText", "Pay"));
       pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR, R.color.colorPrimary);
 
       pay_intent.putExtra("language", params.getBoolean("isEnglish") ? "en" : "ar");
