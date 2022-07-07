@@ -112,7 +112,6 @@ public class PaymobModule extends ReactContextBaseJavaModule {
 
           params.putString("type", "transactionAccepted");
 
-          params.putString("token", extras.getString(SaveCardResponseKeys.TOKEN));
           sendEvent(reactContext, "didDismiss", params);
         } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_PARSING_ISSUE) {
           // User finished their payment successfully. An error occured while reading the returned JSON.
