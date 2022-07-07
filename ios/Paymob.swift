@@ -24,18 +24,36 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
         DispatchQueue.main.async {
             let vc = self.topMostController()
             do {
-              try self.accept.presentPayVC(
-//                vC: UIApplication.shared.keyWindow!.rootViewController!,
-                vC: vc,
-                billingData: data["billingData"] as! [String: String],
-                paymentKey: data["paymentKey"] as! String,
-                saveCardDefault: data["saveCardDefault"] as! Bool,
-                showSaveCard: data["showSaveCard"] as! Bool,
-                showAlerts: data["showAlerts"] as! Bool,
-                isEnglish: data["isEnglish"] as! Bool,
-                showScanCardButton: data["showScanCardButton"] as! Bool,
-                buttonText: (data["buttonText"] as? String) ?? "Pay"
-              )
+                if cardToken == "" {
+                     try self.accept.presentPayVC(
+                        //vC: UIApplication.shared.keyWindow!.rootViewController!,
+                        vC: vc,
+                        billingData: data["billingData"] as! [String: String],
+                        paymentKey: data["paymentKey"] as! String,
+                        saveCardDefault: data["saveCardDefault"] as! Bool,
+                        showSaveCard: data["showSaveCard"] as! Bool,
+                        showAlerts: data["showAlerts"] as! Bool,
+                        isEnglish: data["isEnglish"] as! Bool,
+                        showScanCardButton: data["showScanCardButton"] as! Bool,
+                        buttonText: (data["buttonText"] as? String) ?? "Pay"
+                    )
+                }
+                else{
+                    try self.accept.presentPayVC(
+                        // vC: UIApplication.shared.keyWindow!.rootViewController!,
+                        vC: vc,
+                        billingData: data["billingData"] as! [String: String],
+                        paymentKey: data["paymentKey"] as! String,
+                        cardToken: data["cardToken"] as! String,
+                        maskedCardNumber: data["maskedCardNumber"] as! String,
+                        saveCardDefault: data["saveCardDefault"] as! Bool,
+                        showSaveCard: data["showSaveCard"] as! Bool,
+                        showAlerts: data["showAlerts"] as! Bool,
+                        isEnglish: data["isEnglish"] as! Bool,
+                        showScanCardButton: data["showScanCardButton"] as! Bool,
+                        buttonText: (data["buttonText"] as? String) ?? "Pay"
+                    )
+                }
               promiseResolver(true)
             } catch AcceptSDKError.MissingArgumentError(let errorMessage) {
               promiseRejecter("AcceptSDKError", errorMessage, nil)
