@@ -109,8 +109,9 @@ public class PaymobModule extends ReactContextBaseJavaModule {
 
           // Use the static keys declared in PayResponseKeys to extract the fields you want
           // ToastMaker.displayShortToast(this, extras.getString(PayResponseKeys.DATA_MESSAGE));
-
           params.putString("type", "transactionAccepted");
+
+          params.putMap("payData", payData);
 
           sendEvent(reactContext, "didDismiss", params);
         } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_PARSING_ISSUE) {
@@ -121,7 +122,7 @@ public class PaymobModule extends ReactContextBaseJavaModule {
         } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_CARD_SAVED) {
           //
 
-          params.putString("type", "transactionAccepted");
+          params.putString("type", "transactionAcceptedWithCard");
   
           params.putMap("payData", payData);
           params.putMap("savedCardData", savedCardData);
