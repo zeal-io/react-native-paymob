@@ -177,7 +177,7 @@ public class PaymobModule extends ReactContextBaseJavaModule {
       pay_intent.putExtra("ActionBar", false);
 
       ReadableMap billingData = params.getMap("billingData");
-      pay_intent.putExtra( PayActivityIntentKeys.FIRST_NAME, billingData.getString("first_name"));
+      pay_intent.putExtra(PayActivityIntentKeys.FIRST_NAME, billingData.getString("first_name"));
       pay_intent.putExtra(PayActivityIntentKeys.LAST_NAME, billingData.getString("last_name"));
       pay_intent.putExtra(PayActivityIntentKeys.BUILDING, billingData.getString("building"));
       pay_intent.putExtra(PayActivityIntentKeys.FLOOR, billingData.getString("floor"));
@@ -187,7 +187,15 @@ public class PaymobModule extends ReactContextBaseJavaModule {
       pay_intent.putExtra(PayActivityIntentKeys.COUNTRY, billingData.getString("country"));
       pay_intent.putExtra(PayActivityIntentKeys.EMAIL, billingData.getString("email"));
       pay_intent.putExtra(PayActivityIntentKeys.PHONE_NUMBER, billingData.getString("phone_number"));
-      pay_intent.putExtra(PayActivityIntentKeys.POSTAL_CODE, billingData.getString("postal_code") );
+      pay_intent.putExtra(PayActivityIntentKeys.POSTAL_CODE, billingData.getString("postal_code"));
+
+      if(params.getString("cardToken") != null && !params.getString("cardToken").isEmpty()){
+        pay_intent.putExtra(PayActivityIntentKeys.TOKEN, params.getString("cardToken"));
+      }
+
+      if(params.getString("maskedCardNumber") != null && !params.getString("maskedCardNumber").isEmpty()){
+        pay_intent.putExtra(PayActivityIntentKeys.MASKED_PAN_NUMBER, params.getString("maskedCardNumber"));
+      }
 
       currentActivity.startActivityForResult(pay_intent, REQUEST_CODE);
       promise.resolve(12345);
