@@ -153,7 +153,7 @@ public class PaymobModule extends ReactContextBaseJavaModule {
           payData.putString("source_data_pan", extras.getString(PayResponseKeys.SOURCE_DATA_PAN));
           payData.putString("created_at", extras.getString(PayResponseKeys.CREATED_AT));
           payData.putString("source_data_sub_type", extras.getString(PayResponseKeys.SOURCE_DATA_SUB_TYPE));
-          payData.putString("dataMessage", extras.getString(PayResponseKeys.DATAMESSAGE));
+          payData.putString("dataMessage", extras.getString(PayResponseKeys.DATA_MESSAGE));
 
 
           WritableMap savedCardData = Arguments.createMap();
