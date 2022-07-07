@@ -54,7 +54,7 @@ public class PaymobModule extends ReactContextBaseJavaModule {
 
         WritableMap savedCardData = Arguments.createMap();
 
-          WritableMap payData = Arguments.createMap();
+        WritableMap payData = Arguments.createMap();
 
           if (extras != null) {
             for (String key : extras.keySet()) {
@@ -71,12 +71,12 @@ public class PaymobModule extends ReactContextBaseJavaModule {
               }
 
                 if(payData.hasKey("token")){
-                    savedCard.putString("id",extras.getString(SaveCardResponseKeys.ID));
-                    savedCard.putString("token", extras.getString(SaveCardResponseKeys.TOKEN));
-                    savedCard.putString("card_subtype", extras.getString(SaveCardResponseKeys.CARD_SUBTYPE));
-                    savedCard.putString("masked_pan", extras.getString(SaveCardResponseKeys.MASKED_PAN));
-                    savedCard.putString("merchant_id", extras.getString(SaveCardResponseKeys.MERCHANT_ID));
-                    savedCard.putString("email", extras.getString(SaveCardResponseKeys.EMAIL));
+                    savedCardData.putString("id",extras.getString(SaveCardResponseKeys.ID));
+                    savedCardData.putString("token", extras.getString(SaveCardResponseKeys.TOKEN));
+                    savedCardData.putString("card_subtype", extras.getString(SaveCardResponseKeys.CARD_SUBTYPE));
+                    savedCardData.putString("masked_pan", extras.getString(SaveCardResponseKeys.MASKED_PAN));
+                    savedCardData.putString("merchant_id", extras.getString(SaveCardResponseKeys.MERCHANT_ID));
+                    savedCardData.putString("email", extras.getString(SaveCardResponseKeys.EMAIL));
                 }
             }
 
