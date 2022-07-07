@@ -81,6 +81,36 @@ public class PaymobModule extends ReactContextBaseJavaModule {
           // ToastMaker.displayShortToast(this, extras.getString(PayResponseKeys.DATA_MESSAGE));
 
           params.putString("type", "transactionAccepted");
+
+          WritableMap payData = Arguments.createMap();
+
+          payData.putInt("amount_cents", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
+          payData.putBoolean("is_refunded", extras.getBoolean(PayResponseKeys.IS_REFUNDED));
+          payData.putInt("captured_amount", extras.getInt(PayResponseKeys.CAPTURED_AMOUNT));
+
+          payData.putString("source_data_type", extras.getString(PayResponseKeys.SOURCE_DATA_SUB_TYPE));
+          payData.putString("currency", extras.getString(PayResponseKeys.CURRENCY));
+
+          payData.putBoolean("is_void", extras.getBoolean(PayResponseKeys.IS_VOID));
+          payData.putBoolean("pending",  extras.getBoolean(PayResponseKeys.PENDING));
+          payData.putBoolean("is_3d_secure", extras.getBoolean(PayResponseKeys.IS_3D_SECURE));
+          payData.putBoolean("is_auth", extras.getBoolean(PayResponseKeys.IS_AUTH));
+          payData.putBoolean("is_refund", extras.getBoolean(PayResponseKeys.IS_REFUND));
+          payData.putBoolean("is_voided", extras.getBoolean(PayResponseKeys.IS_VOIDED));
+          payData.putBoolean("success", extras.getBoolean(PayResponseKeys.SUCCESS));
+          payData.putBoolean("error_occured", extras.getBoolean(PayResponseKeys.ERROR_OCCURED));
+          payData.putBoolean("is_standalone_payment", extras.getBoolean(PayResponseKeys.IS_STANDALONE_PAYMENT));
+
+          payData.putInt("id", extras.getInt(PayResponseKeys.ID));
+          payData.putInt("owner", extras.getInt(PayResponseKeys.OWNER));
+          payData.putInt("profile_id", extras.getInt(PayResponseKeys.PROFILE_ID));
+          payData.putInt("refunded_amount_cents", extras.getInt(PayResponseKeys.REFUNDED_AMOUNT_CENTS));
+          payData.putInt("integration_id", extras.getInt(PayResponseKeys.INTEGRATION_ID));
+          payData.putInt("order", extras.getInt(PayResponseKeys.ORDER));
+          
+          params.putMap("payData", payData);
+
+
           params.putString("token", extras.getString(SaveCardResponseKeys.TOKEN));
           sendEvent(reactContext, "didDismiss", params);
         } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_PARSING_ISSUE) {
@@ -112,18 +142,18 @@ public class PaymobModule extends ReactContextBaseJavaModule {
           payData.putBoolean("error_occured", extras.getBoolean(PayResponseKeys.ERROR_OCCURED));
           payData.putBoolean("is_standalone_payment", extras.getBoolean(PayResponseKeys.IS_STANDALONE_PAYMENT));
 
-          payData.putInt("id", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
-          payData.putInt("owner", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
-          payData.putInt("profile_id", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
-          payData.putInt("refunded_amount_cents", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
-          payData.putInt("integration_id", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
-          payData.putInt("order", extras.getInt(PayResponseKeys.AMOUNT_CENTS));
+          payData.putInt("id", extras.getInt(PayResponseKeys.ID));
+          payData.putInt("owner", extras.getInt(PayResponseKeys.OWNER));
+          payData.putInt("profile_id", extras.getInt(PayResponseKeys.PROFILE_ID));
+          payData.putInt("refunded_amount_cents", extras.getInt(PayResponseKeys.REFUNDED_AMOUNT_CENTS));
+          payData.putInt("integration_id", extras.getInt(PayResponseKeys.INTEGRATION_ID));
+          payData.putInt("order", extras.getInt(PayResponseKeys.ORDER));
 
 
-          payData.putString("source_data_pan", "");
-          payData.putString("created_at", "");
-          payData.putString("source_data_sub_type", "");
-          payData.putString("dataMessage", "");
+          payData.putString("source_data_pan", extras.getString(PayResponseKeys.SOURCE_DATA_PAN));
+          payData.putString("created_at", extras.getString(PayResponseKeys.CREATED_AT));
+          payData.putString("source_data_sub_type", extras.getString(PayResponseKeys.SOURCE_DATA_SUB_TYPE));
+          payData.putString("dataMessage", extras.getString(PayResponseKeys.DATAMESSAGE));
 
 
           WritableMap savedCardData = Arguments.createMap();
