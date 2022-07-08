@@ -24,7 +24,7 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
         DispatchQueue.main.async {
             let vc = self.topMostController()
             do {
-                if cardToken == "" {
+                if data["cardToken"] as! String == "" {
                      try self.accept.presentPayVC(
                         //vC: UIApplication.shared.keyWindow!.rootViewController!,
                         vC: vc,
@@ -44,11 +44,11 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
                         vC: vc,
                         billingData: data["billingData"] as! [String: String],
                         paymentKey: data["paymentKey"] as! String,
-                        cardToken: data["cardToken"] as! String,
-                        maskedCardNumber: data["maskedCardNumber"] as! String,
                         saveCardDefault: data["saveCardDefault"] as! Bool,
                         showSaveCard: data["showSaveCard"] as! Bool,
                         showAlerts: data["showAlerts"] as! Bool,
+                        token: data["cardToken"] as? String,
+                        maskedPanNumber: data["maskedCardNumber"] as! String,
                         isEnglish: data["isEnglish"] as! Bool,
                         showScanCardButton: data["showScanCardButton"] as! Bool,
                         buttonText: (data["buttonText"] as? String) ?? "Pay"
