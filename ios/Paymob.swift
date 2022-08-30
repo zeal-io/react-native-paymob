@@ -25,9 +25,7 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
             let vc = self.topMostController()
             do {
               try self.accept.presentPayVC(
-//                vC: UIApplication.shared.keyWindow!.rootViewController!,
                 vC: vc,
-                billingData: data["billingData"] as! [String: String],
                 paymentKey: data["paymentKey"] as! String,
                 saveCardDefault: data["saveCardDefault"] as! Bool,
                 showSaveCard: data["showSaveCard"] as! Bool,

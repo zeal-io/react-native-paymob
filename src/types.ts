@@ -37,40 +37,22 @@ export interface SaveCardResponse {
   // email?: string;
 }
 
-export interface BillingData {
-  apartment: string;
-  email: string;
-  floor: string;
-  first_name: string;
-  street: string;
-  building: string;
-  phone_number: string;
-  shipping_method: string;
-  postal_code: string;
-  city: string;
-  country: string;
-  last_name: string;
-  state: string;
-}
-
 export interface PaymobT {
   presentPayVC: ({
-    billingData,
     paymentKey,
     saveCardDefault,
     showSaveCard,
     showAlerts,
     isEnglish,
     showScanCardButton,
-    buttonText
+    buttonText,
   }: {
-    billingData: BillingData;
     paymentKey: string;
     saveCardDefault: boolean;
     showSaveCard: boolean;
     showAlerts: boolean;
     isEnglish: boolean;
     showScanCardButton: boolean;
-    buttonText?: string
+    buttonText?: string;
   }) => void;
 }
