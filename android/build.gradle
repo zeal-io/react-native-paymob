@@ -53,10 +53,13 @@ repositories {
     jcenter()
 }
 
+configurations.maybeCreate("default")
+artifacts.add("default", file("libs/acceptsdk-release.aar"))
+
 dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation fileTree(dir: "libs", include: ["*.aar"])
+    // implementation fileTree(dir: "libs", include: ["*.aar"])
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
@@ -66,5 +69,4 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.github.bellalMohamed:EditCard:V1.0.1'
     implementation 'com.android.volley:volley:1.2.0'
-
 }
