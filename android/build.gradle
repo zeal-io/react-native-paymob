@@ -3,7 +3,10 @@ buildscript {
         repositories {
             maven { url 'https://www.jitpack.io' }
             google()
-            jcenter()
+            mavenCentral()
+            flatDir {
+                dirs 'libs'
+            }
         }
 
         dependencies {
@@ -54,7 +57,7 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.aar"])
+    // implementation fileTree(dir: "libs", include: ["*.aar"])
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
@@ -66,5 +69,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.github.bellalMohamed:EditCard:V1.0.1'
     implementation 'com.android.volley:volley:1.2.0'
-
+    compileOnly fileTree(dir: 'libs', include: ['*.aar'])
 }
