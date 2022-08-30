@@ -22,13 +22,6 @@ Pod::Spec.new do |s|
     'ios/**/*.h'
   ]
 
-  s.ios.vendored_frameworks = 'AcceptCardSDK/Classes/AcceptSDK.xcframework'
-
-  s.requires_arc = true
-  s.pod_target_xcconfig = { 'VALID_ARCHS' => 'arm64 arm64e armv7 armv7s x86_64' }
-
-  s.ios.vendored_frameworks = 'AcceptCardSDK/Classes/AcceptSDK.xcframework'
-
-  s.dependency "AcceptCardSDK", '>= 5.4.4'
+  s.dependency "AcceptCardSDK", '5.4.4'
   s.dependency "React-Core"
 end
