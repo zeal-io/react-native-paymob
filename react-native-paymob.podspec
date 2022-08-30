@@ -11,22 +11,12 @@ Pod::Spec.new do |s|
   s.authors          = package["author"]
   s.swift_version    = '5.3.2'
 
-
-
   s.platforms    = { :ios => "12.0" }
   s.source       = { :git => "https://github.com/a-eid/react-native-paymob.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
-  s.preserve_paths = [
-    'ios/**/*.{h,m,mm,swift}'
-  ]
-
-  s.static_framework = true
-  s.ios.vendored_frameworks = 'AcceptCardSDK/Classes/AcceptSDK.xcframework'
-  s.requires_arc = true
-
-
+  # s.dependency "React-Core"
+  s.dependency 'React'
   s.dependency "AcceptCardSDK", '>= 5.4.3'
-  s.dependency "React-Core"
 end
