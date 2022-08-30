@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
 
 
 
-  s.platforms    = { :ios => "12.0" }
+  s.platforms    = { :ios => "10.0" }
   s.source       = { :git => "https://github.com/a-eid/react-native-paymob.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
@@ -22,6 +22,6 @@ Pod::Spec.new do |s|
     'ios/**/*.h'
   ]
 
-  s.dependency "AcceptCardSDK", '5.4.4'
+  s.dependency "AcceptCardSDK", '5.4.3'
   s.dependency "React-Core"
 end
