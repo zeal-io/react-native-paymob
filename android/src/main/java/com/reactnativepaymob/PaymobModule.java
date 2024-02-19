@@ -172,7 +172,14 @@ public class PaymobModule extends ReactContextBaseJavaModule {
       if(params.getString("buttonText") != null) {
         pay_intent.putExtra("PAY_BUTTON_TEXT", params.getString("buttonText"));
       }
-      pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR, R.color.colorPrimary);
+
+      try {
+          int colorValue = ContextCompat.getColor(currentActivity, R.color.colorPrimary);
+          pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR, colorValue);
+      } catch (Resources.NotFoundException e) {
+        // 
+      }
+
       pay_intent.putExtra("language", params.getBoolean("isEnglish") ? "en" : "ar");
       pay_intent.putExtra("ActionBar", false);
 
