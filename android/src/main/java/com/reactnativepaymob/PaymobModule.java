@@ -176,10 +176,10 @@ public class PaymobModule extends ReactContextBaseJavaModule {
       }
 
       try {
-          int colorValue = ContextCompat.getColor(currentActivity, R.color.colorPrimary);
-          pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR, colorValue);
+        int colorValue = ContextCompat.getColor(currentActivity, R.color.colorPrimary);
+        pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR, colorValue);
+        // pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR,getResources().getColor(R.color.ThemeColor));
       } catch (Resources.NotFoundException e) {
-        // 
       }
 
       pay_intent.putExtra("language", params.getBoolean("isEnglish") ? "en" : "ar");
