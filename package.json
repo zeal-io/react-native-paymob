@@ -1,6 +1,6 @@
 {
   "name": "react-native-paymob",
-  "version": "0.3.19",
+  "version": "0.3.20",
   "description": "react native paymob sdk",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -101,7 +101,6 @@
     "source": "src",
     "output": "lib",
     "targets": [
-      ["aar", {"reverseJetify": true}],
       "commonjs",
       "module",
       ["typescript",
