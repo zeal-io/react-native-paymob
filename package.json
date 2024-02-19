@@ -1,6 +1,6 @@
 {
   "name": "react-native-paymob",
-  "version": "0.3.20",
+  "version": "0.3.21",
   "description": "react native paymob sdk",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
@@ -103,7 +103,8 @@
     "targets": [
       "commonjs",
       "module",
-      ["typescript",
+      [
+        "typescript",
         {
           "project": "tsconfig.build.json"
         }
