@@ -176,9 +176,8 @@ public class PaymobModule extends ReactContextBaseJavaModule {
       }
 
       try {
-        int colorValue = ContextCompat.getColor(currentActivity, R.color.colorPrimary);
+        int colorValue = ContextCompat.getColor(currentActivity, com.google.android.material.R.color.cardview_dark_background);
         pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR, colorValue);
-        // pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR,getResources().getColor(R.color.ThemeColor));
       } catch (Resources.NotFoundException e) {
       }
 
