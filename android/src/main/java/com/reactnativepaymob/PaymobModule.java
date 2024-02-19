@@ -21,6 +21,8 @@ import com.paymob.acceptsdk.PayActivityIntentKeys;
 import com.paymob.acceptsdk.PayResponseKeys;
 import com.paymob.acceptsdk.SaveCardResponseKeys;
 
+import androidx.core.content.ContextCompat;
+import android.content.res.Resources;
 
 import java.util.HashMap;
 
