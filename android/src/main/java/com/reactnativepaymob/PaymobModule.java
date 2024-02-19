@@ -1,6 +1,7 @@
 package com.reactnativepaymob;
 import android.content.Intent;
 import android.os.Bundle;
+import android.graphics.Color;
 import android.app.Activity;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -175,10 +176,15 @@ public class PaymobModule extends ReactContextBaseJavaModule {
         pay_intent.putExtra("PAY_BUTTON_TEXT", params.getString("buttonText"));
       }
 
-      try {
+    try {
         int colorValue = ContextCompat.getColor(currentActivity, com.google.android.material.R.color.cardview_dark_background);
         pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR, colorValue);
       } catch (Resources.NotFoundException e) {
+      }
+
+      if(params.getString("buttonBg") != null) {
+        int colorValue = Color.parseColor(params.getString("buttonBg"));
+        pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR, colorValue);
       }
 
       pay_intent.putExtra("language", params.getBoolean("isEnglish") ? "en" : "ar");
