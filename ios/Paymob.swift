@@ -33,7 +33,8 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
                 showSaveCard: data["showSaveCard"] as! Bool,
                 showAlerts: data["showAlerts"] as! Bool,
                 isEnglish: data["isEnglish"] as! Bool,
-                showScanCardButton: data["showScanCardButton"] as! Bool
+                showScanCardButton: data["showScanCardButton"] as! Bool,
+                buttonText: (data["buttonText"] as? String) ?? "Pay"
               )
               promiseResolver(true)
             } catch AcceptSDKError.MissingArgumentError(let errorMessage) {

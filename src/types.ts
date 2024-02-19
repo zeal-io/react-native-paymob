@@ -62,6 +62,7 @@ export interface PaymobT {
     showAlerts,
     isEnglish,
     showScanCardButton,
+    buttonText
   }: {
     billingData: BillingData;
     paymentKey: string;
@@ -70,5 +71,6 @@ export interface PaymobT {
     showAlerts: boolean;
     isEnglish: boolean;
     showScanCardButton: boolean;
+    buttonText?: string
   }) => void;
 }
