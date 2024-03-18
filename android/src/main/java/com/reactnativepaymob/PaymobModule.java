@@ -1,6 +1,7 @@
 package com.reactnativepaymob;
 import android.content.Intent;
 import android.os.Bundle;
+import android.graphics.Color;
 import android.app.Activity;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -21,6 +22,8 @@ import com.paymob.acceptsdk.PayActivityIntentKeys;
 import com.paymob.acceptsdk.PayResponseKeys;
 import com.paymob.acceptsdk.SaveCardResponseKeys;
 
+import androidx.core.content.ContextCompat;
+import android.content.res.Resources;
 
 import java.util.HashMap;
 
@@ -163,7 +166,18 @@ public class PaymobModule extends ReactContextBaseJavaModule {
       if(params.getString("buttonText") != null) {
         pay_intent.putExtra("PAY_BUTTON_TEXT", params.getString("buttonText"));
       }
-      pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR, R.color.colorPrimary);
+
+    try {
+        int colorValue = ContextCompat.getColor(currentActivity, com.google.android.material.R.color.cardview_dark_background);
+        pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR, colorValue);
+      } catch (Resources.NotFoundException e) {
+      }
+
+      if(params.getString("buttonBg") != null) {
+        int colorValue = Color.parseColor(params.getString("buttonBg"));
+        pay_intent.putExtra(PayActivityIntentKeys.THEME_COLOR, colorValue);
+      }
+
       pay_intent.putExtra("language", params.getBoolean("isEnglish") ? "en" : "ar");
       pay_intent.putExtra("ActionBar", false);
 
