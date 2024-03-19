@@ -28,30 +28,30 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
                      try self.accept.presentPayVC(
                         //vC: UIApplication.shared.keyWindow!.rootViewController!,
                         vC: vc,
-                        billingData: data["billingData"] as! [String: String],
+                        // billingData: data["billingData"] as! [String: String],
                         paymentKey: data["paymentKey"] as! String,
                         saveCardDefault: data["saveCardDefault"] as! Bool,
                         showSaveCard: data["showSaveCard"] as! Bool,
                         showAlerts: data["showAlerts"] as! Bool,
-                        isEnglish: data["isEnglish"] as! Bool,
-                        showScanCardButton: data["showScanCardButton"] as! Bool,
-                        buttonText: (data["buttonText"] as? String) ?? "Pay"
+                        // isEnglish: data["isEnglish"] as! Bool,
+                        // showScanCardButton: data["showScanCardButton"] as! Bool,
+                        // buttonText: (data["buttonText"] as? String) ?? "Pay"
                     )
                 }
                 else{
                     try self.accept.presentPayVC(
                         // vC: UIApplication.shared.keyWindow!.rootViewController!,
                         vC: vc,
-                        billingData: data["billingData"] as! [String: String],
+                        // billingData: data["billingData"] as! [String: String],
                         paymentKey: data["paymentKey"] as! String,
                         saveCardDefault: data["saveCardDefault"] as! Bool,
                         showSaveCard: data["showSaveCard"] as! Bool,
                         showAlerts: data["showAlerts"] as! Bool,
                         token: data["cardToken"] as? String,
                         maskedPanNumber: data["maskedCardNumber"] as? String,
-                        isEnglish: data["isEnglish"] as! Bool,
-                        showScanCardButton: data["showScanCardButton"] as! Bool,
-                        buttonText: (data["buttonText"] as? String) ?? "Pay"
+                        // isEnglish: data["isEnglish"] as! Bool,
+                        // showScanCardButton: data["showScanCardButton"] as! Bool,
+                        // buttonText: (data["buttonText"] as? String) ?? "Pay"
                     )
                 }
               promiseResolver(true)

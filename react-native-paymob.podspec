@@ -22,6 +22,6 @@ Pod::Spec.new do |s|
     'ios/**/*.h'
   ]
 
-  s.dependency "AcceptCardSDK", '5.4.3'
+  s.dependency "AcceptCardSDK", '5.6.0'
   s.dependency "React-Core"
 end
