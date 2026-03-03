@@ -1,0 +1,11 @@
+name: SonarQube
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sonarqube:
+    uses: zeal-io/zeal-workflows/.github/workflows/static-code-analysis.yml@main
+    secrets: inherit
