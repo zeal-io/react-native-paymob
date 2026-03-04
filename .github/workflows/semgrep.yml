@@ -1,0 +1,9 @@
+name: Semgrep
+on:
+  push:
+    branches:
+      - main
+jobs:
+  semgrep:
+    uses: zeal-io/zeal-workflows/.github/workflows/semgrep.ci.yml@main
+    secrets: inherit
