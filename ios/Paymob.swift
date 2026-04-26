@@ -24,16 +24,26 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
         DispatchQueue.main.async {
             let vc = self.topMostController()
             do {
-              try self.accept.presentPayVC(
-                vC: vc,
-                paymentKey: data["paymentKey"] as! String,
-                saveCardDefault: data["saveCardDefault"] as! Bool,
-                showSaveCard: data["showSaveCard"] as! Bool,
-                showAlerts: data["showAlerts"] as! Bool,
-                isEnglish: data["isEnglish"] as! Bool,
-                showScanCardButton: data["showScanCardButton"] as! Bool,
-                buttonText: (data["buttonText"] as? String) ?? "Pay"
-              )
+                if data["cardToken"] == nil {
+                     try self.accept.presentPayVC(
+                        vC: vc,
+                        paymentKey: data["paymentKey"] as! String,
+                        saveCardDefault: data["saveCardDefault"] as! Bool,
+                        showSaveCard: data["showSaveCard"] as! Bool,
+                        showAlerts: data["showAlerts"] as! Bool
+                    )
+                }
+                else{
+                    try self.accept.presentPayVC(
+                        vC: vc,
+                        paymentKey: data["paymentKey"] as! String,
+                        saveCardDefault: data["saveCardDefault"] as! Bool,
+                        showSaveCard: data["showSaveCard"] as! Bool,
+                        showAlerts: data["showAlerts"] as! Bool,
+                        token: data["cardToken"] as? String,
+                        maskedPanNumber: data["maskedCardNumber"] as? String
+                    )
+                }
               promiseResolver(true)
             } catch AcceptSDKError.MissingArgumentError(let errorMessage) {
               promiseRejecter("AcceptSDKError", errorMessage, nil)
@@ -66,7 +76,7 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
 
     public func transactionAccepted(_ payData: PayResponse, savedCardData: SaveCardResponse) {
         sendEvent(withName: "didDismiss", body: [
-            "type": "transactionAccepted",
+            "type": "transactionAcceptedWithCard",
             "payData": payResponseToDictionary(payData),
             "savedCardData": [
                 "card_subtype": savedCardData.card_subtype,
@@ -74,16 +84,14 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
                 "token": savedCardData.token,
                 "masked_pan": savedCardData.masked_pan,
                 "merchant_id": savedCardData.merchant_id,
-            // .  "email": savedCardData.email,
-            //    "order_id": savedCardData.order_id
+                "created_at": savedCardData.created_at
             ]
-
         ])
     }
 
     public func userDidCancel3dSecurePayment(_ pendingPayData: PayResponse) {
         sendEvent(withName: "didDismiss", body: [
-            "type": "userDidCancel3dSecurePayment",
+            "type": "userDidCancel3dSecureVerification",
             "pendingPayData": payResponseToDictionary(pendingPayData)
         ])
     }
@@ -93,13 +101,12 @@ class Paymob: RCTEventEmitter, AcceptSDKDelegate {
             "type": "userDidCancel",
         ])
     }
+
     override func supportedEvents() -> [String]! {
         return ["didDismiss"]
     }
 
-
     func payResponseToDictionary(_ payData: PayResponse) -> [String : Any] {
-        print(payData)
         return [
              "amount_cents": payData.amount_cents,
              "is_refunded": payData.is_refunded,
