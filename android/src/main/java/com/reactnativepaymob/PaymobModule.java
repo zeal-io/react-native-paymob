@@ -93,6 +93,10 @@ public class PaymobModule extends ReactContextBaseJavaModule {
         } else if (resultCode == IntentConstants.TRANSACTION_ERROR) {
           params.putString("type", "paymentAttemptFailed");
           params.putString("detailedDescription", extras.getString(IntentConstants.TRANSACTION_ERROR_REASON));
+          String rawResponse = extras.getString(IntentConstants.RAW_PAY_RESPONSE);
+          if (rawResponse != null && !rawResponse.isEmpty()) {
+            params.putString("rawResponse", rawResponse);
+          }
           sendEvent(reactContext, "didDismiss", params);
         } else if (resultCode == IntentConstants.TRANSACTION_REJECTED) {
           params.putString("type", "transactionRejected");

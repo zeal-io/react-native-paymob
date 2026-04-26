@@ -74,6 +74,7 @@ export interface MissingArgumentEvent extends PaymobEventPayload {
 export interface PaymentAttemptFailedEvent extends PaymobEventPayload {
   type: "paymentAttemptFailed";
   detailedDescription: string;
+  rawResponse?: string;
 }
 
 export interface TransactionRejectedEvent extends PaymobEventPayload {
