@@ -33,8 +33,6 @@ export interface SaveCardResponse {
   created_at: string;
   masked_pan: string;
   merchant_id: number;
-  // order_id?: number;
-  // email?: string;
 }
 
 export interface BillingData {
@@ -42,10 +40,8 @@ export interface BillingData {
   email: string;
   floor: string;
   first_name: string;
-  street: string;
   building: string;
   phone_number: string;
-  shipping_method: string;
   postal_code: string;
   city: string;
   country: string;
@@ -53,24 +49,76 @@ export interface BillingData {
   state: string;
 }
 
+export type PaymobEventType =
+  | "userDidCancel"
+  | "missingArgument"
+  | "paymentAttemptFailed"
+  | "transactionRejected"
+  | "transactionAccepted"
+  | "transactionAcceptedWithCard"
+  | "userDidCancel3dSecureVerification";
+
+export interface PaymobEventPayload {
+  type: PaymobEventType;
+}
+
+export interface UserDidCancelEvent extends PaymobEventPayload {
+  type: "userDidCancel";
+}
+
+export interface MissingArgumentEvent extends PaymobEventPayload {
+  type: "missingArgument";
+  missingKey: string;
+}
+
+export interface PaymentAttemptFailedEvent extends PaymobEventPayload {
+  type: "paymentAttemptFailed";
+  detailedDescription: string;
+}
+
+export interface TransactionRejectedEvent extends PaymobEventPayload {
+  type: "transactionRejected";
+  payData: PayResponse;
+  rawResponse?: string;
+}
+
+export interface TransactionAcceptedEvent extends PaymobEventPayload {
+  type: "transactionAccepted";
+  payData: PayResponse;
+  rawResponse?: string;
+}
+
+export interface TransactionAcceptedWithCardEvent extends PaymobEventPayload {
+  type: "transactionAcceptedWithCard";
+  payData: PayResponse;
+  savedCardData: SaveCardResponse;
+}
+
+export interface UserDidCancel3dSecureVerificationEvent extends PaymobEventPayload {
+  type: "userDidCancel3dSecureVerification";
+  pendingPayData?: string | PayResponse;
+  rawResponse?: string;
+}
+
+export type PaymobEvent =
+  | UserDidCancelEvent
+  | MissingArgumentEvent
+  | PaymentAttemptFailedEvent
+  | TransactionRejectedEvent
+  | TransactionAcceptedEvent
+  | TransactionAcceptedWithCardEvent
+  | UserDidCancel3dSecureVerificationEvent;
+
 export interface PaymobT {
-  presentPayVC: ({
-    billingData,
-    paymentKey,
-    saveCardDefault,
-    showSaveCard,
-    showAlerts,
-    isEnglish,
-    showScanCardButton,
-    buttonText
-  }: {
+  presentPayVC: (params: {
     billingData: BillingData;
     paymentKey: string;
     saveCardDefault: boolean;
     showSaveCard: boolean;
     showAlerts: boolean;
     isEnglish: boolean;
-    showScanCardButton: boolean;
-    buttonText?: string
+    buttonText?: string;
+    cardToken?: string;
+    maskedCardNumber?: string;
   }) => void;
 }

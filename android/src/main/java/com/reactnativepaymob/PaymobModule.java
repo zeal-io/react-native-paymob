@@ -55,7 +55,7 @@ public class PaymobModule extends ReactContextBaseJavaModule {
         Bundle extras = data.getExtras();
         WritableMap params = Arguments.createMap();
 
-        WritableMap savedCardData = Arguments.createMap();
+        WritableMap savedCardData = null;
 
         WritableMap payData = Arguments.createMap();
 
@@ -71,84 +71,65 @@ public class PaymobModule extends ReactContextBaseJavaModule {
                 } else if (value instanceof Boolean) {
                     payData.putBoolean(key, extras.getBoolean(key));
                 }
-              }
 
-                if(payData.hasKey("token")){
+                if(payData.hasKey("token") && savedCardData == null){
+                    savedCardData = Arguments.createMap();
                     savedCardData.putString("id",extras.getString(SaveCardResponseKeys.ID));
                     savedCardData.putString("token", extras.getString(SaveCardResponseKeys.TOKEN));
                     savedCardData.putString("card_subtype", extras.getString(SaveCardResponseKeys.CARD_SUBTYPE));
                     savedCardData.putString("masked_pan", extras.getString(SaveCardResponseKeys.MASKED_PAN));
                     savedCardData.putString("merchant_id", extras.getString(SaveCardResponseKeys.MERCHANT_ID));
-                    savedCardData.putString("email", extras.getString(SaveCardResponseKeys.EMAIL));
                 }
             }
-
+          }
 
         if (resultCode == IntentConstants.USER_CANCELED) {
-          // User canceled and did no payment request was fired
-          // ToastMaker.displayShortToast(this, "User canceled!!");
           params.putString("type", "userDidCancel");
           sendEvent(reactContext, "didDismiss", params);
         } else if (resultCode == IntentConstants.MISSING_ARGUMENT) {
-          // You forgot to pass an important key-value pair in the intent's extras
-          // ToastMaker.displayShortToast(this, "Missing Argument == " + extras.getString(IntentConstants.MISSING_ARGUMENT_VALUE));
+          params.putString("type", "missingArgument");
+          params.putString("missingKey", extras.getString(IntentConstants.MISSING_ARGUMENT_VALUE));
+          sendEvent(reactContext, "didDismiss", params);
         } else if (resultCode == IntentConstants.TRANSACTION_ERROR) {
           params.putString("type", "paymentAttemptFailed");
           params.putString("detailedDescription", extras.getString(IntentConstants.TRANSACTION_ERROR_REASON));
           sendEvent(reactContext, "didDismiss", params);
         } else if (resultCode == IntentConstants.TRANSACTION_REJECTED) {
-          // User attempted to pay but their transaction was rejected
-
-
           params.putString("type", "transactionRejected");
+          params.putMap("payData", payData);
           sendEvent(reactContext, "didDismiss", params);
-          // Use the static keys declared in PayResponseKeys to extract the fields you want
-          // ToastMaker.displayShortToast(this, extras.getString(PayResponseKeys.DATA_MESSAGE));
         } else if (resultCode == IntentConstants.TRANSACTION_REJECTED_PARSING_ISSUE) {
-          // User attempted to pay but their transaction was rejected. An error occured while reading the returned JSON
-          // ToastMaker.displayShortToast(this, extras.getString(IntentConstants.RAW_PAY_RESPONSE));
+          params.putString("type", "transactionRejected");
+          params.putMap("payData", payData);
+          params.putString("rawResponse", extras.getString(IntentConstants.RAW_PAY_RESPONSE));
+          sendEvent(reactContext, "didDismiss", params);
         } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL) {
-          // User finished their payment successfully
-
-          // Use the static keys declared in PayResponseKeys to extract the fields you want
-          // ToastMaker.displayShortToast(this, extras.getString(PayResponseKeys.DATA_MESSAGE));
           params.putString("type", "transactionAccepted");
-
           params.putMap("payData", payData);
-
           sendEvent(reactContext, "didDismiss", params);
         } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_PARSING_ISSUE) {
-          // User finished their payment successfully. An error occured while reading the returned JSON.
-          // ToastMaker.displayShortToast(this, "TRANSACTION_SUCCESSFUL - Parsing Issue");
-
-          // ToastMaker.displayShortToast(this, extras.getString(IntentConstants.RAW_PAY_RESPONSE));
+          params.putString("type", "transactionAccepted");
+          params.putMap("payData", payData);
+          params.putString("rawResponse", extras.getString(IntentConstants.RAW_PAY_RESPONSE));
+          sendEvent(reactContext, "didDismiss", params);
         } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_CARD_SAVED) {
-          //
-
           params.putString("type", "transactionAcceptedWithCard");
-  
           params.putMap("payData", payData);
-          params.putMap("savedCardData", savedCardData);
-
+          if (savedCardData != null) {
+            params.putMap("savedCardData", savedCardData);
+          }
           sendEvent(reactContext, "didDismiss", params);
-        } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_PARSING_ISSUE) {
-          // User finished their payment successfully and card was saved.
-
-          // Use the static keys declared in PayResponseKeys to extract the fields you want
-          // Use the static keys declared in SaveCardResponseKeys to extract the fields you want
-          // ToastMaker.displayShortToast(this, "Token == " + extras.getString(SaveCardResponseKeys.TOKEN));
         } else if (resultCode == IntentConstants.USER_CANCELED_3D_SECURE_VERIFICATION) {
-          // ToastMaker.displayShortToast(this, "User canceled 3-d scure verification!!");
-
-          // Note that a payment process was attempted. You can extract the original returned values
-          // Use the static keys declared in PayResponseKeys to extract the fields you want
-          // ToastMaker.displayShortToast(this, extras.getString(PayResponseKeys.PENDING));
+          params.putString("type", "userDidCancel3dSecureVerification");
+          String pendingJson = extras.getString(PayResponseKeys.PENDING);
+          if (pendingJson != null && !pendingJson.isEmpty()) {
+            params.putString("pendingPayData", pendingJson);
+          }
+          sendEvent(reactContext, "didDismiss", params);
         } else if (resultCode == IntentConstants.USER_CANCELED_3D_SECURE_VERIFICATION_PARSING_ISSUE) {
-          // ToastMaker.displayShortToast(this, "User canceled 3-d scure verification - Parsing Issue!!");
-
-          // Note that a payment process was attempted.
-          // User finished their payment successfully. An error occured while reading the returned JSON.
-          // ToastMaker.displayShortToast(this, extras.getString(IntentConstants.RAW_PAY_RESPONSE));
+          params.putString("type", "userDidCancel3dSecureVerification");
+          params.putString("rawResponse", extras.getString(IntentConstants.RAW_PAY_RESPONSE));
+          sendEvent(reactContext, "didDismiss", params);
         }
       }
     }
